@@ -190,3 +190,122 @@ Section MonoidalFunctors.
   Defined.
 
 End MonoidalFunctors.
+
+
+Section FMonoidalAreMorphisms.
+
+  Definition fmonoidal_identity_data {C : category} (M : monoidal C) : fmonoidal_data M M (functor_identity C).
+  Proof.
+    use tpair.
+    - intros x y.
+      apply identity.
+    - apply identity.
+  Defined.
+
+  Definition fmonoidal_identity_laxlaws {C : category} (M : monoidal C) : fmonoidal_laxlaws (fmonoidal_identity_data M).
+  Proof.
+    repeat (use tpair).
+    - intros x y1 y2 g.
+      rewrite id_left.
+      apply id_right.
+    - intros x y1 y2 g.
+      rewrite id_left.
+      apply id_right.
+    - intros x y z.
+      cbn in *.
+      rewrite id_right.
+      rewrite id_right.
+      rewrite bifunctor_rightid.
+      rewrite id_left.
+      rewrite bifunctor_leftid.
+      apply (! id_right _).
+    - intro x.
+      cbn in *.
+      rewrite assoc'.
+      rewrite id_left.
+      rewrite bifunctor_rightid.
+      apply id_left.
+    - intro x.
+      cbn in *.
+      rewrite assoc'.
+      rewrite id_left.
+      rewrite bifunctor_leftid.
+      apply id_left.
+  Qed.
+
+  Definition fmonoidal_identity_lax {C : category} (M : monoidal C) : fmonoidal_lax M M (functor_identity C)
+    := (fmonoidal_identity_data M,, fmonoidal_identity_laxlaws M).
+
+  Definition fmonoidal_composition_data {C D E : category}
+             {M : monoidal C}
+             {N : monoidal D}
+             {O : monoidal E}
+             {F : functor C D}
+             {G : functor D E}
+             (FMN : fmonoidal_lax M N F)
+             (GNO : fmonoidal_lax N O G)
+    : fmonoidal_data M O (functor_composite F G).
+  Proof.
+    use tpair.
+    - intros x y.
+      exact (((fmonoidal_preservestensordata GNO) (F x) (F y)) · (functor_on_morphisms G ((fmonoidal_preservestensordata FMN) x y))).
+    - exact (((fmonoidal_preservesunit GNO))  · (functor_on_morphisms G ((fmonoidal_preservesunit FMN)))).
+  Defined.
+
+      Definition fmonoidal_composition_laxlaws {C D E : category}
+             {M : monoidal C}
+             {N : monoidal D}
+             {O : monoidal E}
+             {F : functor C D}
+             {G : functor D E}
+             (FMN : fmonoidal_lax M N F)
+             (GNO : fmonoidal_lax N O G)
+        : fmonoidal_laxlaws (fmonoidal_composition_data FMN GNO).
+      Proof.
+        repeat (use tpair).
+        - intros x y1 y2 g.
+          cbn in *.
+          rewrite assoc.
+          rewrite fmonoidal_preservestensornatleft.
+          rewrite assoc'.
+          rewrite (! functor_comp _ _ _).
+          rewrite assoc'.
+          apply cancel_precomposition.
+          rewrite fmonoidal_preservestensornatleft.
+          apply functor_comp.
+        - intros x y1 y2 g.
+          cbn in *.
+          rewrite assoc.
+          rewrite fmonoidal_preservestensornatright.
+          rewrite assoc'.
+          rewrite (! functor_comp _ _ _).
+          rewrite assoc'.
+          apply cancel_precomposition.
+          rewrite fmonoidal_preservestensornatright.
+          apply functor_comp.
+        - intros x y z.
+          cbn in *.
+          admit.
+        - intro x.
+          cbn in *.
+          etrans. {
+            apply cancel_postcomposition.
+            rewrite assoc.
+      Admitted.
+
+      Definition fmonoidal_composition_lax {C D E : category}
+             {M : monoidal C}
+             {N : monoidal D}
+             {O : monoidal E}
+             {F : functor C D}
+             {G : functor D E}
+             (FMN : fmonoidal_lax M N F)
+             (GNO : fmonoidal_lax N O G)
+        : fmonoidal_lax M O (functor_composite F G)
+        := (fmonoidal_composition_data FMN GNO,, fmonoidal_composition_laxlaws FMN GNO).
+
+
+
+
+
+End FMonoidalAreMorphisms.
