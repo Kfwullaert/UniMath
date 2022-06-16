@@ -239,6 +239,10 @@ Monoidal/DisplayedMonoidalCurried.v
 Monoidal/CategoriesOfMonoids.v
 Monoidal/BraidedMonoidalCategories.v
 Monoidal/TotalDisplayedMonoidalCurried.v
+
+Monoidal/Examples/SetCartesianMonoidal.v
+Monoidal/Examples/PointedSetCartesianMonoidal.v
+
 SkewMonoidal/SkewMonoidalCategories.v
 SkewMonoidal/CategoriesOfMonoids.v
 

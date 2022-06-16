@@ -94,7 +94,9 @@ Section SetIsCartesianMonoidal.
       apply funextsec ; intro ; apply idpath.
     - intros x y z w.
       apply idpath.
-  Qed.
+      (* Qed. <- I can't make this a Qed, otherwise, I later have to show how the inverse looks *)
+  Defined.
+
 
   Definition SET_cart_monoidal : monoidal SET
     := (SET_cart_monoidal_data,, SET_cart_monoidal_laws).
