@@ -566,85 +566,56 @@ Section RezkAssociator.
   Proof.
     intros x y z.
 
-    unfold αD.
-    unfold TransportedAssociator.
-    (*
+    Search αD.
 
-    etrans. {
-      apply maponpaths_2.
-      exact (! TransportedAssocLeftOnOb x y z).
-    }
-
-    assert (p1' : (# TD (id pr1 H x #, (pr11 (TransportedTensorComm Duniv H_eso H_ff TC)) (y, z))
-                     · (pr11 (TransportedTensorComm Duniv H_eso H_ff TC)) (x, TC (y, z))) = TransportedAssocRight ((x,y),z)).
-    {
-      rewrite <- (functor_id H).
-      exact (! TransportedAssocRightOnOb x y z).
-    }
-
-    assert (p1 : (nat_z_iso_inv TransportedAssocRight) ((x,y),z)
-                 · (# TD (id pr1 H x #, (pr11 (TransportedTensorComm Duniv H_eso H_ff TC)) (y, z))
-             · (pr11 (TransportedTensorComm Duniv H_eso H_ff TC)) (x, TC (y, z))) = identity _).
-    {
-      use (z_iso_inv_on_right _ _ _ (_,,pr2 TransportedAssocRight ((x,y),z))).
-      rewrite id_right.
-      exact p1'.
-    }
-
-    set (cc := lift_nat_trans_along (D,, Duniv) HHH HHH_eso HHH_ff
-               (nat_trans_comp _ _ _
-       (nat_trans_comp _ _ _ TransportedAssocLeft (post_whisker α H : functor_composite (assoc_left TC) H ⟹ functor_composite (assoc_right TC) H))
-       (nat_z_iso_inv TransportedAssocRight))).
-
-    set (cc1 := (post_whisker α H) : functor_composite (assoc_left TC) H ⟹ functor_composite (assoc_right TC) H).
-    set (cc0 := TransportedAssocLeft).
-    set (cc2 := (nat_z_iso_inv TransportedAssocRight)).
-    set (dd := nat_trans_comp _ _ _ cc0 (nat_trans_comp _ _ _ cc1 cc2) :  functor_composite HHH (assoc_left TD) ⟹ functor_composite HHH (assoc_right TD)).
-    assert (p2' : dd = pre_whisker HHH cc).
-    {
-      etrans. {
-        apply (! lift_nat_trans_along_comm (_,,Duniv) _ HHH_eso HHH_ff _).
-      }
-
-      apply (maponpaths (pre_whisker HHH)).
-      apply (maponpaths (lift_nat_trans_along (D,, Duniv) HHH HHH_eso HHH_ff)).
-      apply nat_trans_comp_assoc.
-      apply homset_property.
-    }
-
-    set (cc' := lift_nat_trans_along (D,, Duniv) HHH HHH_eso HHH_ff
-    (nat_trans_comp _ _ _
-                    (nat_trans_comp _ _ _ TransportedAssocLeft (post_whisker α H))
-                    (nat_z_iso_inv TransportedAssocRight)) (HHH ((x,y),z))).
-
-    set (cc1' := (post_whisker α H) ((x,y),z)).
-    set (cc0' := TransportedAssocLeft ((x,y),z)).
-    set (cc2' := (nat_z_iso_inv TransportedAssocRight) ((x,y),z)).
-    assert (p2 : cc0' · cc1' · cc2' = cc').
-    {
-      set (q := toforallpaths _ _ _ (base_paths _ _ (p2')) ((x,y),z)).
-      refine (_ @ q).
-      apply assoc'.
-    }
-
-    etrans.
-    2: {
-      do 2 apply maponpaths_2.
-      exact p2.
-    }
-    clear p2.
-    unfold cc0', cc1', cc2'.
-    clear cc0' cc1' cc2'.
-    rewrite ! assoc'.
-    apply maponpaths.
     etrans.
     2: {
       apply maponpaths.
-      exact (! p1).
+      exact (! TransportedAssociatorOnOb ((x,y),z)).
     }
-    apply (! id_right _).
-*)
-  Admitted.
+
+    etrans.
+    2: {
+      do 2 apply maponpaths.
+      apply pathsinv0, TransportedAssocLeftInvOnOb.
+    }
+
+    etrans.
+    2: {
+      apply maponpaths.
+      do 2 apply maponpaths_2.
+      apply pathsinv0, TransportedAssocRightOnOb.
+    }
+
+    rewrite ! assoc.
+    do 2 apply maponpaths_2.
+
+    rewrite functor_id.
+    etrans.
+    2: {
+      do 2 apply maponpaths_2.
+      rewrite assoc'.
+      apply maponpaths.
+      etrans.
+      2: apply (functor_comp TD).
+      apply maponpaths.
+      etrans.
+      2: apply binprod_comp.
+      rewrite id_right.
+      apply maponpaths.
+      apply (! pr12 (pr2 (TransportedTensorComm Duniv H_eso H_ff TC) (y,z))).
+    }
+
+    rewrite binprod_id.
+    rewrite functor_id.
+    rewrite id_right.
+    etrans.
+    2: {
+      apply maponpaths_2.
+      apply (! pr12 (pr2 (TransportedTensorComm Duniv H_eso H_ff TC) (x, TC (y,z)))).
+    }
+    apply (! id_left _).
+  Qed.
 
   Context {E : category} (Euniv : is_univalent E)
           (TE : functor (E ⊠ E) E)
@@ -753,86 +724,62 @@ Section RezkAssociator.
       apply idpath.
     }
 
-    (* refine (_ @ tt @ _) ; unfold m ; clear tt.
-    + rewrite pp.
+    refine (_ @ tt @ _) ; unfold m ; clear tt.
+    + unfold pt_GH in pp.
+
+
       rewrite ! (functor_comp (pr1 G)).
-      assert (qq :  pt_GH (TC (c1, c2), c3)
-                    = ptG (H (TC (c1,c2)), H c3) · #(pr11 G) (ptH (TC (c1,c2),c3))).
-      {
-        apply idpath.
-      }
-      rewrite qq.
-      fold ptF.
-      rewrite <- (id_right (id (pr11 G) (H c3))).
-      rewrite binprod_comp.
-      rewrite (functor_comp TE _ _).
-
       rewrite ! assoc'.
-      apply maponpaths.
-      rewrite ! assoc.
       rewrite (functor_id H).
-      do 4 apply maponpaths_2.
-      rewrite <- (functor_id (pr1 G)).
-      exact (! pr212 G _ _ (ptF (c1, c2) #, id H c3)).
-    + rewrite ! assoc'.
-      apply maponpaths.
-      assert (qq' :  (pt_GH (c1, TC (c2, c3))
-                      = ptG (H c1, H (TC (c2,c3))) · #(pr11 G) (ptH (c1, TC (c2,c3))))).
+      do 3 apply maponpaths.
+
+      assert (qq :  pt_GH (TC (c1, c2), c3)
+                    = #(pr11 G) (ptH (TC (c1,c2),c3)) · ptG (H (TC (c1,c2)), H c3)).
       {
         apply idpath.
       }
-      rewrite qq'.
-      fold ptF.
-      assert (qq'' :  pt_GH (c2, c3)
-                      = ptG (H c2, H c3) · #(pr11 G) (ptH (c2,c3))).
-      { apply idpath. }
-      rewrite qq''.
-      rewrite (! id_right (id (pr11 G) (H c1))).
-      rewrite binprod_comp.
-      rewrite (functor_comp TE _ _).
+      unfold pt_GH in qq.
+      etrans.
+      2: {
+        apply maponpaths_2.
+        apply (! qq).
+      }
+      clear qq.
       rewrite ! assoc'.
       apply maponpaths.
-
-      etrans. {
+      etrans.
+      2: {
         do 2 apply maponpaths.
-        rewrite (functor_comp (pr1 G)).
+        apply maponpaths_2.
+        exact (! pp).
+      }
+
+      etrans.
+      2: {
+        etrans.
+        2: {
+          do 3 apply maponpaths.
+          apply id_right.
+        }
+        rewrite binprod_comp.
+        rewrite functor_comp.
         rewrite assoc.
         apply maponpaths_2.
-        rewrite <- (functor_comp (pr1 G)  (ptH (c1, TC (c2, c3)))).
-        etrans. {
-          apply maponpaths.
-          apply (pr12 (pr2 ptF (c1, TC (c2,c3)))).
-        }
-        apply (functor_id (pr1 G)).
-        }
-        rewrite id_left.
-      etrans. {
-        apply maponpaths.
-        apply (! pr212 G _ _ ((id H c1 #, pr1 (pr2 ptF (c2,, c3))))).
-      }
-      unfold functor_tensor_map_dom.
-      unfold functor_composite.
-      simpl.
-      rewrite <- (functor_id (pr1 G)).
-      rewrite assoc.
-      rewrite <- (functor_comp TE).
-      rewrite <- binprod_comp.
-      rewrite (functor_id (pr1 G)).
-      rewrite id_right.
-      rewrite <- (functor_id (pr1 G)).
-      rewrite <- (functor_comp (pr1 G)).
 
-      etrans. {
-        apply maponpaths_2.
+        refine (pr212 G _ _ (ptF (c1, c2) #, id H c3) @ _).
+        simpl.
         do 3 apply maponpaths.
-        apply (pr12 (pr2 ptF (c2,c3))).
+        apply functor_id.
       }
-      etrans. {
-        apply maponpaths_2.
-        do 2 rewrite (functor_id (pr1 G)).
-        apply (functor_id TE).
-      }
-      apply id_left.*)
+
+      rewrite ! assoc.
+      apply idpath.
+    + rewrite ! assoc.
+      apply maponpaths_2.
+
+      set (s := ! pr212 G _ _ ((id H c1 #, pr1 (pr2 ptF (c2,, c3))))).
+
+
   Admitted.
 
   Lemma precompA_eso

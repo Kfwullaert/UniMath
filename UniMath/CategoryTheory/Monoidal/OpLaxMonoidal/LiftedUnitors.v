@@ -106,32 +106,6 @@ Section RezkLeftUnitor.
                        (post_whisker lu H)
           (nat_z_iso_inv LiftPreservesPretensor).
   Proof.
-    (* set (t := lift_nat_trans_along_comm
-             (_,,Duniv) _ H_eso H_ff
-             (nat_trans_comp _ _ _
-                (nat_z_iso_inv LiftPreservesPretensor)
-                (nat_trans_comp _ _ _
-
-                                (nat_z_iso_inv (functor_commutes_with_id H))
-                                (post_whisker lu H)
-                )
-             )
-        ).
-
-    refine (_ @ t @ _).
-    - apply maponpaths.
-      apply (maponpaths ( lift_nat_trans_along (D,, Duniv) H H_eso H_ff)).
-      apply maponpaths.
-
-      use nat_trans_eq.
-      { apply homset_property. }
-      intro.
-      apply (! id_right _).
-    - apply maponpaths.
-      use nat_trans_eq.
-      { apply homset_property. }
-      intro.
-      apply id_right.*)
   Admitted.
 
   Definition H_plu
@@ -219,31 +193,25 @@ Section RezkLeftUnitor.
       refine  (GG (pr1 cd) @ _).
       simpl.
       rewrite (functor_id (pr1 G)).
-      (* rewrite id_right.
-      do 3 rewrite assoc'.
-      do 2 apply maponpaths.
+      rewrite assoc.
       rewrite <- (functor_comp (pr1 G)).
+      rewrite id_left.
+      do 2 apply maponpaths_2.
       apply maponpaths.
-      simpl.
+
       refine (_ @ ! TransportedLeftUnitorOnOb (pr1 cd)).
-      apply maponpaths_2.
-      unfold LiftPreservesPretensor.
-      simpl.
+      apply maponpaths.
+      cbn.
       rewrite ! id_left.
-      rewrite ! id_right.
       rewrite (functor_id H).
-      rewrite id_right.
-      etrans.
-      2: {
-        apply maponpaths_2.
-        apply (! functor_id _ _).
-      }
-      apply (! id_left _).*)
-      admit.
+      rewrite id_left.
+      rewrite ! id_right.
+      rewrite (functor_id (TransportedTensor Duniv H_eso H_ff TC)).
+      apply (! id_right _).
     - exists tt.
       exists tt.
       split ; apply isapropunit.
-  Admitted.
+  Qed.
 
   Definition precomp_lunitor_is_ff
     : fully_faithful (total_functor precompLU).
@@ -445,31 +413,25 @@ Section RezkRightUnitor.
       refine  (GG (pr1 cd) @ _).
       simpl.
       rewrite (functor_id (pr1 G)).
-      (* rewrite id_right.
-      do 3 rewrite assoc'.
-      do 2 apply maponpaths.
+      rewrite assoc.
       rewrite <- (functor_comp (pr1 G)).
+      rewrite id_left.
+      do 2 apply maponpaths_2.
       apply maponpaths.
-      simpl.
+
       refine (_ @ ! TransportedRightUnitorOnOb (pr1 cd)).
-      apply maponpaths_2.
-      unfold LiftPreservesPostTensor.
-      simpl.
+      apply maponpaths.
+      cbn.
       rewrite ! id_left.
-      rewrite ! id_right.
       rewrite (functor_id H).
-      rewrite id_right.
-      etrans.
-      2: {
-        apply maponpaths_2.
-        apply (! functor_id _ _).
-      }
-      apply (! id_left _).*)
-      admit.
+      rewrite id_left.
+      rewrite ! id_right.
+      rewrite (functor_id (TransportedTensor Duniv H_eso H_ff TC)).
+      apply (! id_right _).
     - exists tt.
       exists tt.
       split ; apply isapropunit.
-  Admitted.
+  Qed.
 
   Definition precomp_runitor_is_ff
     : fully_faithful (total_functor precompRU).

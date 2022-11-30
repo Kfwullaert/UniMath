@@ -104,100 +104,11 @@ Section TensorRezk.
     exists (lifted_functor_tensor HGG).
     use Isos.make_z_iso_disp.
     - intros c1 c2.
-      simpl.
-      rewrite id_left.
-      rewrite (functor_id TE).
-      rewrite id_right.
-
-      (* In order to use lift_nat_along_comm, we need β to be of type
-         HH · _ -> HH · _, the domain of β is not definitially
-         of this form, hence, I have to do a manual 'casting' *)
-      (* set (β :=
-             nat_trans_comp
-               (functor_tensor_map_codom TC (functor_compose H G))
-               (HH ∙ functor_tensor_map_codom TD G) HGG
-               (functor_tensor_map_dom TE (functor_compose H G))
-               (post_whisker
-                  (nat_z_iso_inv TransportedTensorComm)
-                  G
-               )
-             : (nat_trans
-                                 (HH  ∙ ((pair_functor G G) ∙ TE))
-                                 ( HH ∙ functor_tensor_map_codom TD G))
-          ).
-
-      set (p := toforallpaths _ _ _ (base_paths _ _
-                                                (lift_nat_trans_along_comm (_,,Euniv) _ HH_eso HH_ff β)) (c1,c2)).
-      etrans.
-      2: {
-        apply maponpaths_2.
-        exact (! p).
-      }
-      clear p.
-      unfold β.
-
-      unfold nat_trans_comp.
-      unfold pr1.
-      rewrite assoc'.
-      etrans.
-      2: {
-        apply maponpaths.
-        apply (functor_comp G).
-      }
-
-      etrans.
-      2: {
-        do 2 apply maponpaths.
-        apply (! pr22 (pr2 (TransportedTensorComm) (c1,c2))).
-      }
-      rewrite functor_id.
-      apply (! id_right _).
+      admit.
     - use tpair.
       2: { split ; apply isaprop_is_nat_trans_tensor. }
       intros c1 c2.
-      simpl.
-      rewrite id_right.
-      rewrite (functor_id TE).
-      rewrite id_left.
-      unfold lifted_functor_tensor.
-
-      set (β :=
-             nat_trans_comp
-               (functor_tensor_map_dom TE (functor_compose H G))
-               (functor_tensor_map_codom TC (functor_compose H G))
-               (HH ∙ functor_tensor_map_codom TD G) HGG
-               (post_whisker
-                  (nat_z_iso_inv TransportedTensorComm)
-                  G
-               )
-             : (nat_trans
-                                 (HH  ∙ ((pair_functor G G) ∙ TE))
-                                 ( HH ∙ functor_tensor_map_codom TD G))
-          ).
-
-      set (p := toforallpaths _ _ _ (base_paths _ _
-                                                (lift_nat_trans_along_comm (_,,Euniv) _ HH_eso HH_ff β)) (c1,c2)).
-      etrans. {
-        apply maponpaths_2.
-        exact p.
-      }
-      clear p.
-      unfold β.
-
-      unfold nat_trans_comp.
-      unfold pr1.
-      rewrite assoc'.
-      etrans. {
-        apply maponpaths.
-        apply (! functor_comp G _ _).
-      }
-
-      etrans. {
-        do 2 apply maponpaths.
-        apply (pr22 (pr2 (TransportedTensorComm) (c1,c2))).
-      }
-      rewrite functor_id.
-      apply id_right.*)
+      admit.
   Admitted.
 
   Definition HT_is_faithful
@@ -252,60 +163,8 @@ Section TensorRezk.
     induction (isotoid _ Duniv (pr2 c2)).
 
     set (t := βHH (pr1 c1) (pr1 c2)).
-    simpl.
-
-    transparent assert ( ff : (E ⟦ functor_tensor_map_codom TC (pre_composition_functor C D E H G2) (pr1 c1, pr1 c2),
-                                   functor_tensor_map_codom TD G2 (H (pr1 c1), H (pr1 c2)) ⟧) ).
-    {
-      apply #(pr1 G2).
-      exact (TransportedTensorComm  (pr1 c1, pr1 c2)).
-    }
-
-    assert (p : ff · pr1 GG2 (H (pr1 c1), H (pr1 c2)) = (pr1 (HT G2 GG2) (pr1 c1, pr1 c2))).
-    {
-      (* etrans.
-      2: {
-        simpl.
-
-        apply maponpaths_2.
-        unfold ff.
-        rewrite <- (functor_comp G2).
-        apply maponpaths.
-        simpl.
-        apply (! pr12 (pr2 TransportedTensorComm _)).
-      }
-      rewrite (functor_id G2).
-      apply (! id_right _).*)
-      admit.
-    }
 
 
-    (*
-    etrans. { apply maponpaths_2 ; exact p. }
-    clear p.
-    rewrite assoc.
-    etrans. { apply maponpaths_2 ; exact t. }
-    clear t.
-    simpl.
-    do 2 rewrite assoc'.
-    apply maponpaths.
-    unfold ff.
-    set (q := pr2 β _ _ (pr1 (pr2 TransportedTensorComm (pr1 cc, pr2 cc)))).
-    etrans. {
-      apply maponpaths.
-      exact (! q).
-    }
-    clear q.
-
-    rewrite assoc.
-    rewrite <- (functor_comp G1).
-    etrans. {
-      apply maponpaths_2.
-      apply maponpaths.
-      apply (pr2 TransportedTensorComm).
-    }
-    rewrite functor_id.
-    apply id_left.*)
   Admitted.
 
   Definition HT_ff : disp_functor_ff HT.
