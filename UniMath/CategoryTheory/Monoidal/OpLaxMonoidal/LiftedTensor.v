@@ -104,12 +104,74 @@ Section TensorRezk.
     exists (lifted_functor_tensor HGG).
     use Isos.make_z_iso_disp.
     - intros c1 c2.
-      admit.
+      simpl.
+      rewrite (functor_id TE).
+      rewrite id_left, id_right.
+
+
+
+      set (β := nat_trans_comp _ _ _
+                               (post_whisker (nat_z_iso_inv TransportedTensorComm) G) HGG
+             :  functor_composite HH (functor_composite TransportedTensor G)
+                                  ⟹ functor_composite HH (functor_composite (pair_functor G G) TE)).
+
+      set (p := toforallpaths _ _ _ (base_paths _ _
+                                                (lift_nat_trans_along_comm (_,,Euniv) _ HH_eso HH_ff β)) (c1,c2)).
+
+      etrans.
+      2: {
+        apply maponpaths.
+        exact (! p).
+      }
+      clear p.
+      unfold β.
+      clear β.
+      simpl.
+      rewrite assoc.
+      rewrite <- (functor_comp G).
+      etrans.
+      2: {
+        apply maponpaths_2.
+        apply maponpaths.
+        apply (! pr12 (pr2 (TransportedTensorComm) (c1,c2))).
+      }
+
+      rewrite functor_id.
+      exact (! id_left _).
     - use tpair.
       2: { split ; apply isaprop_is_nat_trans_tensor. }
       intros c1 c2.
-      admit.
-  Admitted.
+      simpl.
+      rewrite (functor_id TE).
+      rewrite id_left, id_right.
+
+      set (β := nat_trans_comp _ _ _
+                               (post_whisker (nat_z_iso_inv TransportedTensorComm) G) HGG
+             :  functor_composite HH (functor_composite TransportedTensor G)
+                                  ⟹ functor_composite HH (functor_composite (pair_functor G G) TE)).
+
+      set (p := toforallpaths _ _ _ (base_paths _ _
+                                                (lift_nat_trans_along_comm (_,,Euniv) _ HH_eso HH_ff β)) (c1,c2)).
+
+      etrans. {
+        apply maponpaths.
+        exact p.
+      }
+      clear p.
+      unfold β.
+      clear β.
+      simpl.
+      rewrite assoc.
+      rewrite <- (functor_comp G).
+      etrans. {
+        apply maponpaths_2.
+        apply maponpaths.
+        apply (pr12 (pr2 (TransportedTensorComm) (c1,c2))).
+      }
+
+      rewrite functor_id.
+      exact (id_left _).
+  Qed.
 
   Definition HT_is_faithful
              {G1 G2 : [D, E]}
