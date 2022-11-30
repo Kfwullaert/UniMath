@@ -511,29 +511,36 @@ Section FunctorMonoidalProperties.
     refine (GGG (F x) @ _).
     cbn.
     unfold functor_unit_composition.
-    (* assert (aux : (pr2 GG · # G (pr2 FF) #, id G (F x)) =
-                    (pr2 GG #, id pr1 G (F x)) ·  (# G (pr2 FF) #, id pr1 G (F x))).
-    { cbn. rewrite id_left. apply idpath. }
+
     etrans.
-    2: { do 2 apply cancel_postcomposition.
-         etrans.
-         2: { apply maponpaths. exact (! aux). }
-         apply pathsinv0, functor_comp.
+    2: {
+      apply maponpaths.
+      rewrite (! id_left (id G (F x))).
+      rewrite binprod_comp.
+      exact (! functor_comp TE _ _).
     }
-    clear aux.
-    repeat rewrite assoc'. apply maponpaths.
-    assert (aux1 := nat_trans_ax (pr1 GG) (ID,, F x) (F IC,, F x) (pr2 FF,, id (F x))).
-    cbn in aux1.
-    rewrite functor_id in aux1.
+
     etrans.
-    2: { repeat rewrite assoc. do 2 apply cancel_postcomposition.
-         exact (! aux1). }
-    repeat rewrite assoc'. apply maponpaths.
-    do 2 rewrite <- functor_comp.
+    2: {
+      rewrite assoc.
+      apply maponpaths_2.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite <- functor_id.
+      exact (nat_trans_ax (pr1 GG) _ _ (pr2 FF #, id (F x))).
+    }
+
+    simpl.
+    apply maponpaths_2.
+    rewrite ! assoc.
+    apply maponpaths_2.
+    do 2 rewrite <- (functor_comp G).
     apply maponpaths.
-    rewrite assoc.
-    apply (FFF x).*)
-  Admitted.
+
+    exact (FFF x).
+  Qed.
 
   Definition functor_ru_composition
              {ruC : right_unitor TC IC} {ruD : right_unitor TD ID} {ruE : right_unitor TE IE}
@@ -548,28 +555,36 @@ Section FunctorMonoidalProperties.
     refine (GGG (F x) @ _).
     cbn.
     unfold functor_unit_composition.
-    (* assert (aux : (id G (F x) #, pr2 GG · # G (pr2 FF)) = (id G (F x) #, pr2 GG) · (id G (F x) #, # G (pr2 FF))).
-    { cbn. rewrite id_left. apply idpath. }
+
     etrans.
-    2: { do 2 apply cancel_postcomposition.
-         etrans.
-         2: { apply maponpaths. exact (! aux). }
-         apply pathsinv0, functor_comp.
+    2: {
+      apply maponpaths.
+      rewrite (! id_left (id G (F x))).
+      rewrite binprod_comp.
+      exact (! functor_comp TE _ _).
     }
-    clear aux.
-    repeat rewrite assoc'. apply maponpaths.
-    assert (aux1 := nat_trans_ax (pr1 GG) (F x,, ID) (F x,, F IC) (id (F x),, pr2 FF)).
-    cbn in aux1.
-    rewrite functor_id in aux1.
+
     etrans.
-    2: { repeat rewrite assoc. do 2 apply cancel_postcomposition.
-         exact (! aux1). }
-    repeat rewrite assoc'. apply maponpaths.
-    do 2 rewrite <- functor_comp.
+    2: {
+      rewrite assoc.
+      apply maponpaths_2.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite <- functor_id.
+      exact (nat_trans_ax (pr1 GG) _ _ (id (F x) #, pr2 FF)).
+    }
+
+    simpl.
+    apply maponpaths_2.
+    rewrite ! assoc.
+    apply maponpaths_2.
+    do 2 rewrite <- (functor_comp G).
     apply maponpaths.
-    rewrite assoc.
-    apply (FFF x). *)
-  Admitted.
+
+    exact (FFF x).
+  Qed.
 
   Definition functor_ass_composition
              {αC : associator TC} {αD : associator TD} {αE : associator TE}
@@ -581,65 +596,54 @@ Section FunctorMonoidalProperties.
     : functor_ass_disp_cat αC αE (_,, functor_tensorunit_composition FF GG).
   Proof.
     intros x y z. cbn.
-    (* assert (aux : (id G (F x) #, pr11 GG (F y, F z) · # G (pr11 FF (y, z))) =
-                    (id G (F x) #, pr11 GG (F y, F z)) ·  (id G (F x) #, # G (pr11 FF (y, z)))).
-    { cbn. rewrite id_left. apply idpath. }
+
     etrans.
-    2: { apply cancel_postcomposition. apply maponpaths.
-         etrans.
-         2: { apply maponpaths.
-              exact (! aux). }
-         apply pathsinv0, functor_comp.
+    2: {
+      apply maponpaths_2.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite <- (id_right (id G (F x))).
+      rewrite binprod_comp.
+      rewrite (functor_comp TE).
+      rewrite assoc.
+      apply maponpaths_2.
+      rewrite <- functor_id.
+      exact (nat_trans_ax (pr1 GG) _ _ (id (F x) #, (pr11 FF) (y, z))).
     }
-    clear aux.
-    assert (auxnat := nat_trans_ax (pr1 GG) (F x,, _) (F x,, F (y ⊗_C z)) (id (F x),, (pr11 FF) (y, z))).
-    cbn in auxnat.
-    rewrite functor_id in auxnat.
+
+    simpl.
     etrans.
-    2: { repeat rewrite assoc. apply cancel_postcomposition.
-         repeat rewrite assoc'. do 2 apply maponpaths.
-         apply pathsinv0, auxnat. }
-    clear auxnat.
-    assert (GGGinst := GGG (F x) (F y) (F z)).
-    cbn in GGGinst.
-    etrans.
-    2: { apply cancel_postcomposition.
-         repeat rewrite assoc.
-         apply cancel_postcomposition.
-         exact GGGinst.
+    2: {
+      rewrite assoc'.
+      apply maponpaths.
+      do 2 rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc.
+      exact (GGG (F x) (F y) (F z)).
     }
-    clear GGGinst.
-    assert (aux' : (pr11 GG (F x, F y) · # G (pr11 FF (x, y)) #, id G (F z)) =
-                     (pr11 GG (F x, F y) #, id G (F z)) · (# G (pr11 FF (x, y)) #, id G (F z))).
-    { cbn. rewrite id_left. apply idpath. }
+
+    rewrite ! assoc.
+    rewrite <- (id_right (id G (F z))).
+    rewrite binprod_comp.
+    rewrite (functor_comp TE).
+    rewrite ! assoc.
+    apply maponpaths_2.
+    do 3 rewrite <- (functor_comp G).
+
     etrans.
-    { do 2 apply cancel_postcomposition.
-      etrans.
-      { apply maponpaths.
-        exact aux'. }
-      apply functor_comp.
+    2: {
+      apply maponpaths_2.
+      apply maponpaths.
+      exact (FFF x y z).
     }
-    clear aux'.
-    repeat rewrite assoc'. apply maponpaths.
-    etrans.
-    2: { apply maponpaths.
-         do 2 rewrite <- functor_comp.
-         apply maponpaths.
-         rewrite assoc.
-         apply (FFF x y z).
-    }
-    assert (auxnat' := nat_trans_ax (pr1 GG) (F x ⊗_D F y,, F z) (F (x ⊗_C y),, F z) ((pr11 FF) (x, y),, id (F z))).
-    cbn in auxnat'.
-    rewrite functor_id in auxnat'.
-    etrans.
-    { rewrite assoc. apply cancel_postcomposition.
-      exact auxnat'. }
-    clear auxnat'.
-    repeat rewrite assoc'.
-    apply maponpaths.
-    do 2 rewrite <- functor_comp.
-    apply idpath. *)
-  Admitted.
+
+    rewrite ! (functor_comp G).
+    rewrite ! assoc'.
+    do 2 apply maponpaths.
+
+    rewrite <- (functor_id G).
+    exact (! nat_trans_ax (pr1 GG) _ _ ((pr11 FF) (x, y) #, id (F z))).
+  Qed.
 
   Definition functor_monoidal_composition
              {luC : left_unitor TC IC} {luD : left_unitor TD ID} {luE : left_unitor TE IE}
