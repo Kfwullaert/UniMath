@@ -313,3 +313,13 @@ Monoidal/RezkCompletion/LiftedUnitors.v
 Monoidal/RezkCompletion/LiftedAssociator.v
 Monoidal/RezkCompletion/LiftedMonoidal.v
 Monoidal/RezkCompletion/MonoidalRezkCompletion.v
+
+# Lax monoidal categories and the Rezk completion
+Monoidal/LaxMonoidal/LaxMonoidalCategories.v
+Monoidal/LaxMonoidal/LaxMonoidalFunctorCategory.v
+Monoidal/LaxMonoidal/LiftedTensor.v
+Monoidal/LaxMonoidal/LiftedTensorUnit.v
+Monoidal/LaxMonoidal/LiftedUnitors.v
+Monoidal/LaxMonoidal/LiftedAssociator.v
+Monoidal/LaxMonoidal/LiftedMonoidal.v
+Monoidal/LaxMonoidal/LaxMonoidalRezkCompletion.v
