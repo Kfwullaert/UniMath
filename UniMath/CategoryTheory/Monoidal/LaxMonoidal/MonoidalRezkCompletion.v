@@ -4,13 +4,13 @@ Require Import UniMath.MoreFoundations.All.
 Require Import UniMath.CategoryTheory.Core.Categories.
 Require Import UniMath.CategoryTheory.Core.Functors.
 Require Import UniMath.CategoryTheory.Core.Univalence.
-Require Import UniMath.CategoryTheory.Monoidal.MonoidalCategories.
-Require Import UniMath.CategoryTheory.Monoidal.MonoidalFunctorCategory.
+Require Import UniMath.CategoryTheory.Monoidal.LaxMonoidal.LaxMonoidalCategories.
+Require Import UniMath.CategoryTheory.Monoidal.LaxMonoidal.LaxMonoidalFunctorCategory.
 Require Import UniMath.CategoryTheory.Equivalences.Core.
 
 Require Import UniMath.CategoryTheory.DisplayedCats.Total.
 
-Require Import UniMath.CategoryTheory.Monoidal.RezkCompletion.LiftedMonoidal.
+Require Import UniMath.CategoryTheory.Monoidal.LaxMonoidal.LiftedMonoidal.
 Require Import UniMath.CategoryTheory.rezk_completion.
 
 Local Open Scope cat.
