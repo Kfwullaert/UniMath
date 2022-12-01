@@ -323,3 +323,13 @@ Monoidal/LaxMonoidal/LiftedUnitors.v
 Monoidal/LaxMonoidal/LiftedAssociator.v
 Monoidal/LaxMonoidal/LiftedMonoidal.v
 Monoidal/LaxMonoidal/LaxMonoidalRezkCompletion.v
+
+# Oplax monoidal categories and the Rezk completion
+Monoidal/OpLaxMonoidal/OpLaxMonoidalCategories.v
+Monoidal/OpLaxMonoidal/OpLaxMonoidalFunctorCategory.v
+Monoidal/OpLaxMonoidal/LiftedTensor.v
+Monoidal/OpLaxMonoidal/LiftedTensorUnit.v
+Monoidal/OpLaxMonoidal/LiftedUnitors.v
+Monoidal/OpLaxMonoidal/LiftedAssociator.v
+Monoidal/OpLaxMonoidal/LiftedMonoidal.v
+#Monoidal/OpLaxMonoidal/OpLaxMonoidalRezkCompletion.v
