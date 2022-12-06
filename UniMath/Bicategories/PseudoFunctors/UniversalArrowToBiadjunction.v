@@ -46,10 +46,18 @@ Section LeftUniversalArrowToLeftAdjoint.
   Notation "ε{ x }_{ y }" := (counit_nat_z_iso_from_adj_equivalence_of_cats (adj x y)).
   Notation "η{ x }_{ y }" := (unit_nat_z_iso_from_adj_equivalence_of_cats (adj x y)).
 
+  Notation "ε'{ x }_{ y }" := (counit_nat_z_iso_from_adj_equivalence_of_cats (adjinv x y)).
+  Notation "η'{ x }_{ y }" := (unit_nat_z_iso_from_adj_equivalence_of_cats (adjinv x y)).
+
   Definition lift_mor {x : B2} {y : B1}
              (f : B2⟦x, R y⟧)
     : B1⟦L x, y⟧
     := pr11 (adj x y) f.
+
+  Definition lift_mor' {x : B2} {y : B1}
+             (f : B1⟦L x, y⟧)
+    : B2⟦x, R y⟧
+    := pr11 (adjinv x y) f.
 
   Definition lift_2cell {x : B2} {y : B1}
              {f g : B2⟦x, R y⟧}
@@ -57,12 +65,25 @@ Section LeftUniversalArrowToLeftAdjoint.
     : (hom (L x) y)⟦lift_mor f, lift_mor g⟧
     := # (pr11 (adj x y)) α.
 
+  Definition unit_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
+    :  f ==> lift_mor (η x · # R f)
+    := η{x}_{y} f.
+
+  Definition counitinv_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
+    :  lift_mor (η x · # R f) ==> f
+    := ε'{x}_{y} f.
+
+  Definition lift_2cell' {x : B2} {y : B1}
+             {f g : B1⟦L x, y⟧}
+             (α : (hom x (R y))⟦lift_mor' f,lift_mor' g⟧)
+    : (hom (L x) y)⟦f, g⟧
+    := unit_on_ob f • lift_2cell α • counitinv_on_ob g.
+
+
   Definition lift_id (x : B2)
     :  id₁ (L x) ==> lift_mor (id₁ x · η x).
   Proof.
-    set (t :=  pr121 (adj x (L x))).
-    refine (pr1 t  (id₁ (L x)) • _).
-    use (# (pr11 (adj x (L x)))).
+    refine (unit_on_ob (id₁ (L x)) • (lift_2cell _)).
     refine (_ • linvunitor _).
     refine (_ • runitor _).
     use lwhisker.
@@ -73,19 +94,19 @@ Section LeftUniversalArrowToLeftAdjoint.
     : (η (R x) · # R (lift_mor (id₁ (R x)))) ==> (id₁ ((pr111 R) x)).
   Proof.
     set (t :=  pr121 (adjinv (R x) x)).
-    cbn in t.
-    set (s := pr1 t  (id₁ (R x))).
-    cbn in s.
-    unfold lift_mor.
-    (* s is the inverse of this 2-cell .. *)
 
-  Admitted.
+    transparent assert (si : (is_invertible_2cell (pr1 t  (id₁ (R x))))).
+    {
+      apply is_z_iso_to_is_inv2cell.
+      apply (pr12 (adjinv (R x) x)).
+    }
+    exact (inv_of_invertible_2cell (make_invertible_2cell si)).
+  Defined.
 
   Definition no_idea_lift_id_z_iso (x : B1)
     : z_iso (C := hom _ _) (η (R x) · # R (lift_mor (id₁ (R x)))) (id₁ ((pr111 R) x)).
   Proof.
     exists (no_idea_lift_id x).
-
   Admitted.
 
   Definition lift_id_is_z_iso (x : B2)
@@ -111,25 +132,20 @@ Section LeftUniversalArrowToLeftAdjoint.
              {x y z : B2} (f : B2 ⟦ x, y ⟧) (g : B2 ⟦ y, z ⟧)
     : lift_mor (f · η y) · lift_mor (g · η z) ==> lift_mor (f · g · η z).
   Proof.
-    set (t :=  pr121 (adj x (L z))).
-    refine (pr1 t  ( lift_mor (f · η y) · lift_mor (g · η z)) • _).
-    clear t.
-    use (# (pr11 (adj x (L z)))).
+    refine (η{x}_{L z} ( lift_mor (f · η y) · lift_mor (g · η z)) • _).
+    use lift_2cell.
     refine (_ • _).
     { use lwhisker.
       2: apply (inv_of_invertible_2cell (psfunctor_comp _ _ _)).
     }
-    refine (_ • _).
-    { apply lassociator. }
+    refine (lassociator _ _ _ • _).
     refine (_ • _).
     {
       use rwhisker.
       2: apply ((ε{ x }_{L y})).
     }
-    refine (_ • _).
-    { apply rassociator. }
-    refine (_ • _).
-    2: apply lassociator.
+    refine (rassociator _ _ _ • _).
+    refine (_ • lassociator _ _ _).
     use lwhisker.
     apply ((ε{y}_{L z})).
   Defined.
@@ -167,12 +183,14 @@ Section LeftUniversalArrowToLeftAdjoint.
       apply pathsinv0, rwhisker_vcomp.
     - intros x y f.
       cbn.
+
       admit.
     - intros x y f.
       cbn.
       admit.
-    - intro ; intros.
+    - intros x y z w f g h.
       cbn.
+
       admit.
     - intro ; intros.
       cbn.
@@ -214,10 +232,13 @@ Section LeftUniversalArrowToLeftAdjoint.
   Proof.
     repeat split.
     - intros x y f g α.
-      cbn.
-      admit.
+      apply (pr21 (ε{x}_{L y})).
     - intro x.
       cbn.
+      unfold lift_id.
+      cbn.
+      unfold lift_2cell.
+
       admit.
     - intros x y z f g.
       cbn.
@@ -239,6 +260,8 @@ Section LeftUniversalArrowToLeftAdjoint.
         (lift_mor (id₁ (R x)) · f)
         (lift_mor (# R f · η (R y)) · lift_mor (id₁ (R y))).
   Proof.
+    Check  (lift_mor (id₁ (R x)) · f).
+
   Admitted.
 
   Definition no_idea_for_the_name (x : B2)
@@ -262,6 +285,8 @@ Section LeftUniversalArrowToLeftAdjoint.
     repeat split.
     - intros x y f g α.
       cbn.
+
+
       admit.
     - intro x.
       cbn.
