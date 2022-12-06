@@ -504,7 +504,7 @@ Section TotalEquivalence.
   Defined.
 
   Definition total_adj_equivalence_of_cats
-    : adj_equivalence_of_cats (pr11 (total_adjunction FF))
+    : adj_equivalence_of_cats (total_functor LL)
     := adj_equiv_of_cats_from_adj total_equivalence.
 
 End TotalEquivalence.
