@@ -440,6 +440,7 @@ The packages and files are listed here in logical order: each file depends only 
    - [Monoidal/RezkCompletion/LiftedAssociator.v](CategoryTheory/Monoidal/RezkCompletion/LiftedAssociator.v)
    - [Monoidal/RezkCompletion/LiftedMonoidal.v](CategoryTheory/Monoidal/RezkCompletion/LiftedMonoidal.v)
    - [Monoidal/RezkCompletion/MonoidalRezkCompletion.v](CategoryTheory/Monoidal/RezkCompletion/MonoidalRezkCompletion.v)
+   - [DisplayedCats/TotalConstructions/TotalAdjunction.v](CategoryTheory/DisplayedCats/TotalConstructions/TotalAdjunction.v)
    - [All.v](CategoryTheory/All.v)
 ## Package [Bicategories](Bicategories/README.md)
    - [Core/Bicat.v](Bicategories/Core/Bicat.v)

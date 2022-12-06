@@ -230,8 +230,91 @@ Section TotalAdjunction.
         apply id_right.
       }
       exact (triangle_2_statement_from_adjunction F (pr1 x)).
-    - admit.
-  Admitted.
+    - cbn.
+      set (t := triangle_2_over FF (pr1 x) (pr2 x)).
+      unfold triangle_2_statement_over in t.
+      cbn in t.
+
+      set (q := (id_left (ε (pr1 x) · identity (pr1 x)) @ id_right (ε (pr1 x)))).
+
+      assert (p : (id_disp (LL (right_functor F (pr1 x)) (RR (pr1 x) (pr2 x))) ;; (εε (pr1 x) (pr2 x) ;; id_disp (pr2 x))) = transportb _ q (counit_over FF (pr1 x) (pr2 x))).
+      {
+        rewrite id_right_disp.
+        rewrite id_left_disp.
+        now rewrite transport_b_b.
+      }
+
+      etrans. {
+        do 2 apply maponpaths.
+        exact p.
+      }
+      clear p.
+      unfold q.
+      clear q.
+
+      assert (p : identity (right_functor F (pr1 x))
+ · (η (right_functor F (pr1 x)) · identity (right_functor F (left_functor F (right_functor F (pr1 x)))))
+ · (# (right_functor F))%Cat
+     (identity (left_functor F (right_functor F (pr1 x))) · (ε (pr1 x) · identity (pr1 x))) =
+ unit_from_are_adjoints F (right_functor F (pr1 x))
+                        · (# (right_functor F))%Cat (counit_from_are_adjoints F (pr1 x))).
+      {
+        rewrite ! id_left.
+        now rewrite ! id_right.
+      }
+
+      use pathscomp0.
+      {
+        exact (transportb _ p (transportb (mor_disp (right_adj_over FF (pr1 x) (pr2 x)) (right_adj_over FF (pr1 x) (pr2 x))) (triangle_id_right_ad F (pr1 x)) (id_disp (right_adj_over FF (pr1 x) (pr2 x))))).
+      }
+
+      2: {
+        cbn.
+        rewrite transport_b_b.
+        apply maponpaths_2.
+        apply homset_property.
+      }
+      cbn.
+      rewrite transport_b_b.
+      unfold transportb.
+      rewrite disp_functor_transportf.
+      rewrite mor_disp_transportf_prewhisker.
+      use transportf_transpose_left.
+      unfold transportb.
+      rewrite transport_f_f.
+
+      assert (qq : identity (right_functor F (pr1 x))
+ · (adjunit F (right_functor F (pr1 x))
+    · identity (right_functor F (left_functor F (right_functor F (pr1 x)))))
+ · (# (right_functor F))%Cat (adjcounit F (pr1 x)) =
+                    adjunit F (right_functor F (pr1 x)) · (# (right_functor F))%Cat (adjcounit F (pr1 x))).
+      {
+        rewrite ! id_left.
+        now rewrite ! id_right.
+      }
+
+
+      assert (q :  id_disp (RR (pr1 x) (pr2 x)) ;; (ηη (right_functor F (pr1 x)) (RR (pr1 x) (pr2 x)) ;; id_disp (RR (left_functor F (right_functor F (pr1 x))) (LL (right_functor F (pr1 x)) (RR (pr1 x) (pr2 x))))) ;; # RR (counit_over FF (pr1 x) (pr2 x)) = transportb _ qq ( unit_over FF (right_functor F (pr1 x)) (right_adj_over FF (pr1 x) (pr2 x)) ;; # (right_adj_over FF) (counit_over FF (pr1 x) (pr2 x)))).
+      {
+        rewrite id_left_disp.
+        rewrite id_right_disp.
+        rewrite transport_b_b.
+        unfold transportb.
+        rewrite mor_disp_transportf_postwhisker.
+        apply maponpaths_2.
+        apply homset_property.
+      }
+
+      refine (q @ _).
+      etrans. {
+        apply maponpaths.
+        exact t.
+      }
+      rewrite transport_b_b.
+      unfold transportb.
+      use maponpaths_2.
+      apply homset_property.
+  Qed.
 
   Definition total_adjunction
     : adjunction (total_category D1) (total_category D2).
@@ -333,8 +416,70 @@ Section TotalEquivalence.
   Definition total_adjunction_forms_equivalence2
     :  ∏ b : total_category D2, Isos.is_z_isomorphism (adjcounit (total_adjunction FF) b).
   Proof.
+    intro x.
+    use is_z_iso_total.
+    - use Isos.is_z_iso_comp_of_is_z_isos.
+      { apply Isos.identity_is_z_iso. }
+      use Isos.is_z_iso_comp_of_is_z_isos.
+      2: { apply Isos.identity_is_z_iso. }
+      apply (pr2 F).
+    - cbn.
+      use tpair.
+      + set (f := pr1 (pr22 FF (pr1 x) (pr2 x))).
+        cbn.
+        assert (p :  identity (pr1 x) · Isos.is_z_isomorphism_mor ((pr222 F) (pr1 x))
+  · identity (F (right_adjoint F (pr1 x))) = Isos.is_z_isomorphism_mor ((pr222 F) (pr1 x))).
+        {
+          rewrite id_left.
+          now apply id_right.
+        }
+        exact (transportf (mor_disp _ _) (! p) f).
+      + split.
+        * cbn.
+          use transportf_transpose_right.
+          unfold transportb.
+          rewrite mor_disp_transportf_postwhisker.
+          rewrite transport_f_f.
+          cbn.
 
-  Admitted.
+          set (ff := pr12 (pr22 FF (pr1 x) (pr2 x))).
+          cbn in ff.
+          set (fff := transportf_transpose_left ff).
+          refine (_ @ fff).
+          use transportf_transpose_right.
+          unfold transportb.
+          rewrite transport_f_f.
+          rewrite id_right_disp.
+          rewrite id_left_disp.
+          rewrite transport_b_b.
+          unfold transportb.
+          rewrite mor_disp_transportf_prewhisker.
+          rewrite transport_f_f.
+          use transportf_set.
+          apply homset_property.
+        * cbn.
+          use transportf_transpose_right.
+          unfold transportb.
+          rewrite mor_disp_transportf_prewhisker.
+          rewrite transport_f_f.
+          cbn.
+
+          set (ff := pr22 (pr22 FF (pr1 x) (pr2 x))).
+          cbn in ff.
+          set (fff := transportf_transpose_left ff).
+          refine (_ @ fff).
+          use transportf_transpose_right.
+          unfold transportb.
+          rewrite transport_f_f.
+          rewrite id_right_disp.
+          rewrite id_left_disp.
+          rewrite transport_b_b.
+          unfold transportb.
+          rewrite mor_disp_transportf_postwhisker.
+          rewrite transport_f_f.
+          use transportf_set.
+          apply homset_property.
+  Qed.
 
   Definition total_adjunction_forms_equivalence
     : forms_equivalence (total_adjunction FF).
@@ -357,5 +502,9 @@ Section TotalEquivalence.
     }
     exact total_adjunction_forms_equivalence.
   Defined.
+
+  Definition total_adj_equivalence_of_cats
+    : adj_equivalence_of_cats (pr11 (total_adjunction FF))
+    := adj_equiv_of_cats_from_adj total_equivalence.
 
 End TotalEquivalence.
