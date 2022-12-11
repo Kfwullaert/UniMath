@@ -21,6 +21,27 @@ Require Import UniMath.CategoryTheory.DisplayedCats.Equivalences.
 
 Local Open Scope cat.
 
+Section Aux.
+
+  Context {C : category} {D : disp_cat C}.
+  Definition disp_mor_up_to_eq {x y1 y2 : C}
+             {f : C⟦x,y1⟧} (p : y1 = y2)
+             {g : C⟦x,y2⟧} (q : f · idtoiso p = g)
+             {xx : D x} {yy1 : D y1} {yy2 : D y2}
+             (ff : xx -->[f] yy1)
+             (pp : yy1 = transportb _ p yy2)
+    : xx -->[g] yy2.
+  Proof.
+    induction q.
+    use (comp_disp ff).
+    induction p.
+    cbn.
+    induction (! pp).
+    apply id_disp.
+  Defined.
+
+End Aux.
+
 Section FF_SPLITESO_TO_EQUIV_OVER.
 
   Context {C1 C2 : category} (F : adj_equiv C1 C2)
@@ -57,6 +78,8 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
 
   Lemma TODO_JOKER (A : UU) : A. Proof. Admitted.
 
+
+
   Definition rad_unit_ob {x : C1} (xx : D1 x)
     : xx -->[η x] rad_ob (FF x xx).
   Proof.
@@ -81,15 +104,20 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     }
 
     set (p := z_iso_inv_z_iso_inv _ _ (functor_on_z_iso F (_ ,, ηiso x))).
-    set (pp := base_paths _ _ p).
-    simpl in pp.
-    induction (pp).
-    induction (! q).
+    assert (pp : z_iso_inv_from_z_iso ik · idtoiso (idpath (F ((pr112 F) (pr1 F x)))) =
+                   # F (unit_from_are_adjoints F x)).
+    {
+      etrans. { apply id_right. }
+      exact (base_paths _ _ p).
+    }
 
-    (* exact (pr1 jj). *)
+    use (@disp_mor_up_to_eq C2 D2 (L x) (L (R (L x))) (F ((pr112 F) (pr1 F x)))).
+    5: exact (pr1 jj).
+    - apply idpath.
+    - exact (pp).
+    - exact q.
 
-
-    (** The code below would work if we assume that C1 and D1 are univalent **)
+      (** The code below would work if we assume that C1 and D1 are univalent **)
     (* set (i := z_iso_inv (_ ,, ηiso x)).
     set (j := D1_iso_cleaving x (R (L x)) i xx).
     set (jj := Isos.z_iso_inv_from_z_iso_disp (pr2 j)).
@@ -104,6 +132,11 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
   Definition rad_unit_inv_ob {x : C1} (xx : D1 x)
     : rad_ob (FF x xx) -->[pr1 (ηiso x)] xx.
   Proof.
+    set (i := FF_ff (R (L x)) x (rad_ob (FF x xx)) xx (pr1 (ηiso x))).
+    set (w := _ ,, i).
+    use (pr1weq (invweq w)).
+    cbn.
+
     (* set (i := _ ,, ηiso x : z_iso x (R (L x))).
     set (ii := z_iso_inv i).
     set (j := D1_iso_cleaving x (R (L x)) ii xx).
@@ -123,6 +156,13 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     exists (rad_unit_inv_ob xx).
     split.
     - cbn.
+      unfold disp_functor_ff in FF_ff.
+      Check  (rad_unit_inv_ob xx ;; rad_unit_ob xx)%mor_disp.
+      set (p := FF_ff _ _ (rad_ob  (FF x xx)) (rad_ob (FF x xx))).
+
+      (* use (isweqonpathsincl _ _ _ (isinclweq _ _ _ (p _))). *)
+
+
   Admitted.
 
   Definition rad_counit_ob
@@ -209,6 +249,7 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     split.
     - intros x xx.
       cbn.
+
 
       admit.
     - intros x y z xx yy zz f g ff gg.
