@@ -182,130 +182,6 @@ Section DisplayedLeftUniversalArrowDef.
 
 End DisplayedLeftUniversalArrowDef.
 
-Section FF_SPLITESO_TO_EQUIV_OVER.
-
-  Require Import UniMath.CategoryTheory.Core.Univalence.
-  Require Import UniMath.CategoryTheory.DisplayedCats.Univalence.
-
-  Context {C1 C2 : category} (F : adj_equiv C1 C2)
-          {D1 : disp_cat C1} {D2 : disp_cat C2}
-          {FF : disp_functor (left_functor F) D1 D2}
-          (FF_split : disp_functor_disp_ess_split_surj FF)
-          (FF_ff : disp_functor_ff FF)
-          (C2_univ : is_univalent C2)
-          (D1_univ : is_univalent_disp D1).
-
-  Let L := pr1 F : functor C1 C2.
-  Let R := pr112 F : functor C2 C1.
-  Let η := adjunit F.
-  Let ε := adjcounit F.
-
-  Let ηiso := pr122 F.
-  Let εiso := pr222 F.
-
-  Definition D2_iso_cleaving
-    : Fibrations.iso_cleaving D2
-    := Fibrations.iso_cleaving_category C2 C2_univ D2.
-
-  Lemma TODO_JOKER (A : UU) : A. Proof. Admitted.
-
-  Definition rad_over_functor_data
-    : disp_functor_data (right_functor F) D2 D1.
-  Proof.
-    unfold disp_functor_data.
-    use tpair.
-    - intros x xx.
-      set (i := _ ,, εiso x : z_iso (F (R x)) x).
-      set (xx' := pr1 (D2_iso_cleaving x (F (R x)) i xx) : D2 (F (R x))).
-      exact (pr1 (FF_split (R x) xx')).
-    - intros x y xx yy f ff.
-      set (xx' := pr1 (FF_split (R x) (transportb D2 (isotoid C2 C2_univ (counit_from_are_adjoints (pr212 F) x,, εiso x)) xx))).
-      set (yy' := pr1 (FF_split (R y) (transportb D2 (isotoid C2 C2_univ (counit_from_are_adjoints (pr212 F) y,, εiso y)) yy))).
-
-      set (w := FF_ff (R x) (R y) xx' yy' ((# R)%Cat f)).
-      set (ws := issurjectiveweq _ _ _ w).
-      cbn.
-
-      assert (p : (#L)%Cat ((#R)%Cat f) = ε x · f · pr1 (εiso y)).
-      {
-        admit.
-      }
-  Admitted.
-
-  Lemma rad_over_functor_axioms
-    : disp_functor_axioms rad_over_functor_data.
-  Proof.
-    split.
-    - intros x xx.
-      admit.
-    - intros x y z xx yy zz f g ff gg.
-      admit.
-  Admitted.
-
-  Definition rad_over_functor
-    : disp_functor (right_functor F) D2 D1
-    := _ ,, rad_over_functor_axioms.
-
-  Definition rad_unit
-    :  NaturalTransformations.disp_nat_trans
-         (adjunit F)
-         (disp_functor_identity D1)
-         (disp_functor_composite FF rad_over_functor).
-  Proof.
-  Admitted.
-
-  Definition rad_counit
-    :  NaturalTransformations.disp_nat_trans
-         (adjcounit F)
-         (disp_functor_composite rad_over_functor FF)
-         (disp_functor_identity D2).
-  Proof.
-  Admitted.
-
-  Definition rad_over_data
-    : @right_adjoint_over_data C1 C2 F D1 D2 FF.
-  Proof.
-    exists rad_over_functor.
-    exists rad_unit.
-    exact rad_counit.
-  Defined.
-
-  Lemma rad_over_form_disp_adjunction
-    : form_disp_adjunction F rad_over_data.
-  Proof.
-    split.
-    - intros x xx ; cbn.
-      admit.
-    - intros x xx ; cbn.
-      admit.
-  Admitted.
-
-  Definition rad_over
-    : @right_adjoint_over C1 C2 F D1 D2 FF.
-  Proof.
-    exists rad_over_data.
-    exact rad_over_form_disp_adjunction.
-  Defined.
-
-  Definition rad_over_form_equiv
-    : @form_equiv_over C1 C2 F D1 D2 rad_over.
-  Proof.
-    split.
-    - intros x xx ; cbn.
-      admit.
-    - intros x xx ; cbn.
-      admit.
-  Admitted.
-
-  Definition ff_spliteso_to_is_equiv_over
-    : is_equiv_over F FF.
-  Proof.
-    exists rad_over.
-    exact rad_over_form_equiv.
-  Defined.
-
-End FF_SPLITESO_TO_EQUIV_OVER.
-
 Section DisplayedLeftUniversalArrowUnivalence.
 
   Context {B1 B2 : bicat}
@@ -328,9 +204,17 @@ Section DisplayedLeftUniversalArrowUnivalence.
     refine (LL ,, ηη ,, _).
     intros x xx y yy.
     use ff_spliteso_to_is_equiv_over.
-    - admit.
+    - intros f ff.
+      cbn.
+      cbn in ff.
+
+      admit.
     - admit.
     - apply is_univ_hom.
+      admit.
+    - apply is_univ_hom.
+      admit.
+    - use DispUnivalence.is_univalent_disp_disp_hom.
       admit.
     - use DispUnivalence.is_univalent_disp_disp_hom.
       admit.
