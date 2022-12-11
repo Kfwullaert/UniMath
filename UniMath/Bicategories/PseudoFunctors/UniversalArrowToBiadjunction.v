@@ -84,6 +84,23 @@ Section LeftUniversalArrowToLeftAdjoint.
     : (hom (L x) y)⟦lift_mor f, lift_mor g⟧
     := # (pr11 (adj x y)) α.
 
+  Definition unit_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
+    :  f ==> lift_mor (η x · # R f)
+    := η{x}_{y} f.
+
+  Definition counitinv_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
+    :  lift_mor (η x · # R f) ==> f
+    := ε'{x}_{y} f.
+
+  (* Definition lift_2cell' {x y : B2}
+             {f g : B1⟦L x, L y⟧}
+             (α : (hom (L x) (L y))⟦f,g⟧)
+    : (hom (R (L x)) (R (L y)))⟦#R f, #R g⟧
+    := *)
+
+
+     (* unit_on_ob f • lift_2cell α • counitinv_on_ob g. *)
+
   Definition lift_2cell_is_z_iso
              {x : B2} {y : B1}
              {f g : B2⟦x, R y⟧}
@@ -119,19 +136,27 @@ Section LeftUniversalArrowToLeftAdjoint.
     exact p.
   Qed.
 
-  Definition unit_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
-    :  f ==> lift_mor (η x · # R f)
-    := η{x}_{y} f.
+  Definition lift_2cell_eq' {x y : B2}
+             {f g : B1⟦L x, L y⟧}
+             {α β : (hom (L x) (L y))⟦f,g⟧}
+             (p : ##R α = ##R β)
+    : α = β.
+  Proof.
+    (* set (ff := fully_faithful_from_equivalence
+                   _ _ _
+                   (adjinv x y)).
+    set (f_f := fully_faithful_implies_full_and_faithful _ _ _ ff).
+    set (fa := pr2 f_f).
+    set (fa_fg := fa f g).
+    set (i := isweqonpathsincl _ fa_fg).
+    set (j := i α β).
+    set (ii := (Injectivity _ i α β)).
+    use (invmap ii).
+    exact p. *)
+  Admitted.
 
-  Definition counitinv_on_ob {x : B2} {y : B1} (f : B1⟦L x, y⟧)
-    :  lift_mor (η x · # R f) ==> f
-    := ε'{x}_{y} f.
 
-  Definition lift_2cell' {x : B2} {y : B1}
-             {f g : B1⟦L x, y⟧}
-             (α : (hom x (R y))⟦lift_mor' f,lift_mor' g⟧)
-    : (hom (L x) y)⟦f, g⟧
-    := unit_on_ob f • lift_2cell α • counitinv_on_ob g.
+
 
   Definition lift_unit (x : B2)
     :  id₁ (L x) ==> lift_mor (id₁ x · η x).
@@ -256,6 +281,16 @@ Section LeftUniversalArrowToLeftAdjoint.
       apply pathsinv0, rwhisker_vcomp.
     - intros x y f.
       cbn.
+      (* Check  lunitor (lift_mor (f · η y)).
+      Check lift_mor (f · η y).
+      use lift_2cell_eq'.
+      Search ## _ (lunitor _).
+      etrans. {
+      use lift_2cell_eq'.
+        apply psfunctor_F_lunitor.
+      }
+      rewrite ! psfunctor_vcomp.
+      unfold lift_2cell. *)
 
       transparent assert (pp : (lift_mor (id₁ x · f · η y) ==> lift_mor (f · η y))).
       {
@@ -321,6 +356,60 @@ Section LeftUniversalArrowToLeftAdjoint.
 
       admit.
     - intros x y f.
+      use lift_2cell_eq'.
+      etrans. {
+        apply psfunctor_F_runitor.
+      }
+      rewrite ! psfunctor_vcomp.
+      unfold PseudoFunctorBicat.psfunctor_on_cells.
+      simpl.
+      unfold lift_2cell.
+      unfold lift_mor.
+
+      assert (p1 : # R (lift_mor (f · η y)) · id₁ (R (L y)) ==> # R (lift_mor (f · id₁ y · η y))).
+      {
+        refine (_ • _).
+        - use lwhisker.
+          2: { apply psfunctor_id. }
+        - refine (_ • _).
+          + apply psfunctor_comp.
+          + apply psfunctor_on_cells.
+            refine (runitor _ • _).
+            apply (# (pr11 (adj x (L y)))).
+            refine (_ • lassociator _ _ _).
+            use (lwhisker f).
+            apply linvunitor.
+      }
+
+      assert (p : runitor (# R ((pr11 (adj x (L y))) (f · η y))) =  p1 • ## R (# (pr11 (adj x (L y))) (runitor f ▹ η y))).
+      {
+        Search runitor (# _ _).
+
+
+        admit.
+      }
+
+
+
+      Check pr12 (pr11 (adj x (L y))) _.
+
+      set (t1 := psfunctor_comp R (# left_universal_arrow_psfunctor_data f)
+                                (id₁ (left_universal_arrow_psfunctor_data y)) ^-1).
+      set (t2 := # R (# left_universal_arrow_psfunctor_data f)).
+      set (t3 :=  (psfunctor_id R (left_universal_arrow_psfunctor_data y)) ^-1).
+
+      set (s1 :=  (## R (# left_universal_arrow_psfunctor_data f
+                           ◃ PseudoFunctorBicat.psfunctor_id left_universal_arrow_psfunctor_data y))).
+      set (s2 :=  ## R (PseudoFunctorBicat.psfunctor_comp left_universal_arrow_psfunctor_data f (id₁ y))).
+
+      set (s3 :=  ## R (PseudoFunctorBicat.psfunctor_on_cells left_universal_arrow_psfunctor_data (runitor f))).
+
+      simpl in *.
+      Check runitor t2.
+
+      assert (t1 =  s1).
+
+
       cbn.
       admit.
     - intros x y z w f g h.
