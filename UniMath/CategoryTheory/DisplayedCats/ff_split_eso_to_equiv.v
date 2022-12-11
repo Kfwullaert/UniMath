@@ -15,6 +15,11 @@ Require Import UniMath.CategoryTheory.DisplayedCats.Functors.
 Require Import UniMath.CategoryTheory.DisplayedCats.Univalence.
 Require Import UniMath.CategoryTheory.DisplayedCats.NaturalTransformations.
 Require Import UniMath.CategoryTheory.DisplayedCats.Fibrations.
+Require Import UniMath.CategoryTheory.DisplayedCats.Adjunctions.
+Require Import UniMath.CategoryTheory.DisplayedCats.Equivalences.
+
+
+Local Open Scope cat.
 
 Section FF_SPLITESO_TO_EQUIV_OVER.
 
@@ -59,12 +64,12 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     set (w := _ ,, i).
     use (pr1weq (invweq w)).
     cbn.
-    set (g := (# F)%Cat (unit_from_are_adjoints F x)).
+    (* set (g := (# F)%Cat (unit_from_are_adjoints F x)).
     cbn in g.
     assert (g = (#L)%Cat (η x)).
     {
       apply idpath.
-    }
+    } *)
 
     set (ik := z_iso_inv (functor_on_z_iso F (_ ,, ηiso x))).
     cbn in ik.
@@ -74,19 +79,17 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     {
       admit.
     }
-    (* induction (q). *)
-
-    Search z_iso_inv_from_z_iso.
 
     set (p := z_iso_inv_z_iso_inv _ _ (functor_on_z_iso F (_ ,, ηiso x))).
     set (pp := base_paths _ _ p).
-    cbn in pp.
-    induction (p).
+    simpl in pp.
+    induction (pp).
+    induction (! q).
 
-    exact (pr1 jj).
+    (* exact (pr1 jj). *)
 
 
-
+    (** The code below would work if we assume that C1 and D1 are univalent **)
     (* set (i := z_iso_inv (_ ,, ηiso x)).
     set (j := D1_iso_cleaving x (R (L x)) i xx).
     set (jj := Isos.z_iso_inv_from_z_iso_disp (pr2 j)).
@@ -96,12 +99,12 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     }
     induction p.
     exact (pr1 jj). *)
-  Defined.
+  Admitted.
 
   Definition rad_unit_inv_ob {x : C1} (xx : D1 x)
     : rad_ob (FF x xx) -->[pr1 (ηiso x)] xx.
   Proof.
-    set (i := _ ,, ηiso x : z_iso x (R (L x))).
+    (* set (i := _ ,, ηiso x : z_iso x (R (L x))).
     set (ii := z_iso_inv i).
     set (j := D1_iso_cleaving x (R (L x)) ii xx).
 
@@ -111,7 +114,8 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     }
     induction p.
     exact (pr12 j).
-  Defined.
+  Defined. *)
+  Admitted.
 
   Definition rad_unit_z_iso {x : C1} (xx : D1 x)
     : Isos.is_z_iso_disp (adjunitiso F x) (rad_unit_ob xx).
