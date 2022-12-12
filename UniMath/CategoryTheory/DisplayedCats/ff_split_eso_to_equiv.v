@@ -24,20 +24,75 @@ Local Open Scope cat.
 Section Aux.
 
   Context {C : category} {D : disp_cat C}.
-  Definition disp_mor_up_to_eq {x y1 y2 : C}
+
+  Definition disp_mor_up_to_eq
+             {x1 x2 y1 y2 : C}
+             {f : C⟦x1,y1⟧}
+             (py : y1 = y2)
+             (px : x2 = x1)
+             {g : C⟦x2,y2⟧}
+             {xx1 : D x1} {xx2 : D x2} {yy1 : D y1} {yy2 : D y2}
+             (q : idtoiso px · f · idtoiso py = g)
+             (ff : xx1 -->[f] yy1)
+             (ppy : yy1 = transportb _ py yy2)
+             (ppx : xx1 = transportf _ px xx2)
+    : xx2 -->[g] yy2.
+  Proof.
+    induction q.
+    use comp_disp.
+    2: {
+      use comp_disp.
+      3: exact ff.
+      induction (! ppx).
+      induction px.
+      apply id_disp.
+    }
+    induction (! ppy).
+    induction py.
+    apply id_disp.
+  Defined.
+
+  Definition disp_mor_up_to_eq_r {x y1 y2 : C}
              {f : C⟦x,y1⟧} (p : y1 = y2)
-             {g : C⟦x,y2⟧} (q : f · idtoiso p = g)
+             {g : C⟦x,y2⟧}
              {xx : D x} {yy1 : D y1} {yy2 : D y2}
+             (q : f · idtoiso p = g)
              (ff : xx -->[f] yy1)
              (pp : yy1 = transportb _ p yy2)
     : xx -->[g] yy2.
   Proof.
-    induction q.
-    use (comp_disp ff).
-    induction p.
-    cbn.
-    induction (! pp).
-    apply id_disp.
+
+    assert (px : idtoiso (idpath x) · f · idtoiso p = g).
+    {
+      rewrite assoc'.
+      rewrite q.
+      apply id_left.
+    }
+
+    use (disp_mor_up_to_eq p (idpath _) px ff).
+    - exact pp.
+    - apply idpath.
+  Defined.
+
+  Definition disp_mor_up_to_eq_l {x1 x2 y : C}
+             {f : C⟦x1,y⟧} (p : x2 = x1)
+             {g : C⟦x2,y⟧}
+             {xx1 : D x1} {xx2 : D x2} {yy : D y}
+             (q : idtoiso p · f = g)
+             (ff : xx1 -->[f] yy)
+             (pp : xx1 = transportf _ p xx2)
+    : xx2 -->[g] yy.
+  Proof.
+
+    assert (px : idtoiso p · f · idtoiso (idpath _) = g).
+    {
+      rewrite q.
+      apply id_right.
+    }
+
+    use (disp_mor_up_to_eq (idpath _) p px ff).
+    - apply idpath.
+    - exact pp.
   Defined.
 
 End Aux.
@@ -100,6 +155,7 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     set (jj := Isos.z_iso_inv_from_z_iso_disp (pr2 j)).
     assert (q : pr1 j = FF (R (L x)) (rad_ob (FF x xx))).
     {
+
       admit.
     }
 
@@ -111,7 +167,7 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
       exact (base_paths _ _ p).
     }
 
-    use (@disp_mor_up_to_eq C2 D2 (L x) (L (R (L x))) (F ((pr112 F) (pr1 F x)))).
+    use (@disp_mor_up_to_eq_r C2 D2 (L x) (L (R (L x))) (F ((pr112 F) (pr1 F x)))).
     5: exact (pr1 jj).
     - apply idpath.
     - exact (pp).
@@ -137,7 +193,12 @@ Section FF_SPLITESO_TO_EQUIV_OVER.
     use (pr1weq (invweq w)).
     cbn.
 
-    (* set (i := _ ,, ηiso x : z_iso x (R (L x))).
+    use (@disp_mor_up_to_eq_l C2 D2).
+    6:
+
+    use (@disp_mor_up_to_eq_l C2 D2 (L (R (L x))) (L x)).
+
+  (* set (i := _ ,, ηiso x : z_iso x (R (L x))).
     set (ii := z_iso_inv i).
     set (j := D1_iso_cleaving x (R (L x)) ii xx).
 
