@@ -92,11 +92,26 @@ Section LeftUniversalArrowToLeftAdjoint.
     :  lift_mor (η x · # R f) ==> f
     := ε'{x}_{y} f.
 
+  Lemma test {x y : B2} {f : B2⟦x,y⟧}
+    : # R (lift_mor (f · η y)) ==>  _ · f · η y.
+
+  Lemma test {x y : B2} {f g : B2⟦x,y⟧} (α : f ==> g)
+    : ## R (lift_2cell (α ▹ η y)) = α.
+
+  (* Lemma lift_mor_after_R {x : B2} {y : B1}
+             (f : B2⟦x, R y⟧)
+    : #R (lift_mor f) = f.
+
+  Lemma lift_2cell_after_R {x : B2} {y : B1}
+             {f g : B2⟦x, R y⟧}
+             (α : (hom x (R y))⟦f,g⟧)
+    : ##R (lift_2cell α) = α.
+
   (* Definition lift_2cell' {x y : B2}
              {f g : B1⟦L x, L y⟧}
              (α : (hom (L x) (L y))⟦f,g⟧)
     : (hom (R (L x)) (R (L y)))⟦#R f, #R g⟧
-    := *)
+    := *) *)
 
 
      (* unit_on_ob f • lift_2cell α • counitinv_on_ob g. *)
@@ -281,6 +296,112 @@ Section LeftUniversalArrowToLeftAdjoint.
       apply pathsinv0, rwhisker_vcomp.
     - intros x y f.
       cbn.
+      use lift_2cell_eq'.
+      etrans. { apply psfunctor_F_lunitor. }
+      rewrite ! psfunctor_vcomp.
+      rewrite vassocl.
+      apply pathsinv0.
+      use vcomp_move_L_pV.
+
+      (* transparent assert (α :  (# R (lift_mor (id₁ x · η x) · lift_mor (f · η y)) ==> (# R (id₁ (L x) · lift_mor (f · η y))))).
+      {
+        apply (##R).
+        apply rwhisker.
+        apply lift_unit_z_iso.
+      }
+
+      transparent assert (β : (# R (id₁ (L x)) · # R (lift_mor (f · η y)) ==> # R (id₁ (L x) · lift_mor (f · η y)))).
+      {
+        apply psfunctor_comp.
+      }
+
+
+      assert (q : pr1 (psfunctor_comp R (id₁ (L x)) (lift_mor (f · η y))) = β • (## R (lift_unit x ▹ lift_mor (f · η y))) • α).
+      {
+        unfold β, α.
+        etrans.
+        2: {
+          rewrite vassocl.
+          apply maponpaths.
+          rewrite <- psfunctor_vcomp.
+          rewrite rwhisker_vcomp.
+          etrans.
+          2: {
+            do 2 apply maponpaths.
+            exact (! pr12 (lift_unit_is_z_iso x)).
+          }
+
+          etrans.
+          2: {
+            apply maponpaths.
+            apply pathsinv0, id2_rwhisker.
+          }
+          now rewrite psfunctor_id2.
+        }
+        Search (_ • id2 _).
+        now rewrite id2_right.
+      }*)
+
+
+      transparent assert (pi : (is_invertible_2cell ( ((psfunctor_id R (L x)) ^-1 ▹ # R (lift_mor (f · η y)))))).
+      {
+        apply is_invertible_2cell_rwhisker.
+        apply is_invertible_2cell_inv.
+      }
+
+      use (vcomp_move_L_pM _ _ _ pi).
+      unfold pi.
+      clear pi.
+
+      Check   (is_invertible_2cell_rwhisker (# R (lift_mor (f · η y)))
+     (is_invertible_2cell_inv (psfunctor_id R (L x)))) ^-1.
+      (*  id₁ (R (L x)) · # R (lift_mor (f · η y)) ==> # R (id₁ (L x)) · # R (lift_mor (f · η y)) *)
+      Check  (psfunctor_comp R (id₁ (L x)) (lift_mor (f · η y))).
+      (* (# R (id₁ (L x)) · # R (lift_mor (f · η y))) ==> (# R (id₁ (L x) · lift_mor (f · η y))) *)
+      Check ((## R (lift_unit x ▹ lift_mor (f · η y)))).
+      (*  # R (id₁ (L x) · lift_mor (f · η y)) ==> # R (lift_mor (id₁ x · η x) · lift_mor (f · η y)) *)
+      Check  ## R (lift_comp (id₁ x) f).
+      (* # R (lift_mor (id₁ x · η x) · lift_mor (f · η y)) ==> # R (lift_mor (id₁ x · f · η y)) *)
+      Check  ## R (lift_2cell (lunitor f ▹ η y)).
+      (* ##R (lift_mor (id₁ x · f · η y)) ==> # R (lift_mor (f · η y)) *)
+
+      Search ## R (lift_2cell (_ ▹ η _)).
+
+      etrans. {
+        do 2 apply maponpaths_2.
+        apply q.
+      }
+
+      (* unfold β, α.
+      clear q β α.
+
+      etrans. {
+        do 2 apply maponpaths_2.
+        rewrite vassocl.
+        apply maponpaths.
+        rewrite <- psfunctor_vcomp.
+        rewrite rwhisker_vcomp.
+        etrans. {
+            do 2 apply maponpaths.
+            exact (pr12 (lift_unit_is_z_iso x)).
+        }
+        etrans. {
+          apply maponpaths.
+          apply id2_rwhisker.
+        }
+        now rewrite psfunctor_id2.
+      }
+
+      rewrite id2_right. *)
+
+
+
+
+
+
+
+
+
       (* Check  lunitor (lift_mor (f · η y)).
       Check lift_mor (f · η y).
       use lift_2cell_eq'.
@@ -291,6 +412,8 @@ Section LeftUniversalArrowToLeftAdjoint.
       }
       rewrite ! psfunctor_vcomp.
       unfold lift_2cell. *)
+
+
 
       transparent assert (pp : (lift_mor (id₁ x · f · η y) ==> lift_mor (f · η y))).
       {
@@ -314,6 +437,11 @@ Section LeftUniversalArrowToLeftAdjoint.
 
       rewrite vassocl.
       rewrite p.
+
+
+      Search (_ ^-1 ▹ _).
+
+
       unfold pp.
       unfold lift_comp.
       unfold lift_2cell.
@@ -347,7 +475,7 @@ Section LeftUniversalArrowToLeftAdjoint.
         apply maponpaths.
         apply (functor_comp (pr11 (adj x (L y)))).
       }
-
+      Check  lunitor (lift_mor (f · η y)).
 
 
 
