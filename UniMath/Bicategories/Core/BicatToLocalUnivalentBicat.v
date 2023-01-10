@@ -37,9 +37,9 @@ Require Import UniMath.Bicategories.PseudoFunctors.Examples.Composition.
 
 Local Open Scope cat.
 
-(* Section Aux.
+Section Aux.
 
-  Lemma paste_nat_z_iso_square
+  Definition paste_nat_z_iso_square
         {a b c d e f : category}
         {r1 : functor a b} {r2 : functor b d} {r3 : functor d f}
         {l1 : functor a c} {l2 : functor c e} {l3 : functor e f}
@@ -56,7 +56,49 @@ Local Open Scope cat.
     exact (nat_z_iso_functor_comp_assoc r1 r2 r3).
   Defined.
 
-End Aux. *)
+  Definition pair_nat_z_iso
+             {a1 a2 b1 b2 : category}
+             {l1 l2 : functor a1 a2}
+             {r1 r2 : functor b1 b2}
+             (α : nat_z_iso l1 l2)
+             (β : nat_z_iso r1 r2)
+    : nat_z_iso (pair_functor l1 r1) (pair_functor l2 r2).
+  Proof.
+    use make_nat_z_iso.
+    - exists (λ xy, α (pr1 xy) ,, β (pr2 xy)).
+      abstract (intro ; intros ; use total2_paths2 ; [apply (pr21 α) | apply (pr21 β)]).
+    - intro.
+      apply is_z_iso_binprod_z_iso.
+      + apply (pr2 α).
+      + apply (pr2 β).
+  Defined.
+
+  Print pair_nat_z_iso.
+
+  Definition nat_z_iso_id
+             {a b : category} (F : functor a b)
+    : nat_z_iso F F.
+  Proof.
+    exists (nat_trans_id F).
+    exact (is_nat_z_iso_nat_trans_id F).
+  Defined.
+
+  Definition pair_nat_z_iso_comp
+             {C1 C2 C3 D1 D2 D3 : category}
+             {F1 G1 : functor C1 C2}
+             {F2 G2 : functor C2 C3}
+             {F1' G1' : functor C1 C2}
+             {F2' G2' : functor C2 C3}
+             (α : nat_z_iso (pair_functor (functor_composite F1 F2) (functor_composite G1 G2))
+                            (pair_functor (functor_composite F1' F2') (functor_composite G1' G2'))
+             )
+    : nat_z_iso (functor_composite (pair_functor F1 G1) (pair_functor F2 G2))
+                (functor_composite (pair_functor F1' G1') (pair_functor F2' G2')).
+  Proof.
+  Admitted.
+
+
+End Aux.
 
 
 Section Aux.
@@ -770,6 +812,25 @@ Section LocalUnivalenceRezk.
     etrans. { apply maponpaths, rassociator_lassociator. }
     apply (functor_id (η (hom x w))).
   Qed.
+
+  Lemma prewhisker_LRB_associator_co
+        {x y z w : B}
+        (f : B ⟦ x, y ⟧)
+        (g : B ⟦ y, z ⟧)
+        (h : B ⟦ z, w ⟧)
+    : # (LRB_composition x z w) (pr1 (LRB_composition_comm x y z) (f : hom _ _, g : hom _ _) #, id₁ (η (hom z w) h) )
+        · pr1 (LRB_composition_comm x z w) (f  · g : hom _ _, h : hom _ _) · # (η (hom x w)) (rassociator f g h) =
+        ((LRB_associator_nat_z_iso x y z w) (η (hom x y) f, (η (hom y z) g, η (hom z w) h)))
+            · # (LRB_composition x y w)
+            (make_dirprod
+               (id₁ (η (hom x y) f))
+               (pr1 (LRB_composition_comm y z w) (g : hom _ _, h : hom _ _))
+              : R (hom x y) ⊠ R (hom y w)⟦(_,_),(_,_)⟧
+            )
+            · pr1 (LRB_composition_comm x y w) (f : hom _ _, g · h: hom _ _).
+  Proof.
+  Admitted.
+
 
   Lemma LRB_vcomp_lunitor
         {x y : B}
@@ -1572,6 +1633,37 @@ Section LocalUnivalenceRezk.
     exact (pr1 (LRB_composition_comm a d e) (f·g·h : hom _ _,i)).
   Defined.
 
+  Context (a b c d e : B).
+  Let f1 := (pair_functor (hcomp_functor (a := a) (b := b) (c := c)) (functor_identity (hom c d ⊠ hom d e))).
+  (* f1 : (hom a b ⊠ hom b c) ⊠ (hom c d ⊠ hom d e) ⟶ hom a c ⊠ (hom c d ⊠ hom d e) *)
+
+  Let f2 := (pair_functor (functor_identity (hom a c)) (hcomp_functor (a := c) (b := d) (c := e))).
+  (* f2 :  hom a c ⊠ (hom a d ⊠ hom d e) ⟶ hom a c ⊠ hom a e *)
+
+  Let f_2 := functor_composite f1 f2.
+
+  Let f_2 := functor_composite (functor_composite f1 hcomp_functor) (η (hom a e)).
+
+
+
+  Let f2 := (λ F : functor (hom a c ⊠ hom a e) B, functor_composite (functor_composite (pair_functor (functor_identity (hom a c))
+                                       (hcomp_functor (a := a) (b := d) (c := e))
+                                             ) F)).
+  (η (hom a e))).
+
+  Definition compl_assoc (a b c d e : B)
+    : nat_z_iso (functor_composite
+                   (pair_functor (hcomp_functor (a := a) (b := b) (c := c)) (functor_identity (hom c d ⊠ hom d e)))
+                   (functor_composite
+                      (functor_composite
+                         (pair_functor (functor_identity (hom a c))
+                                       (hcomp_functor (a := a) (b := d) (c := e))
+                      ))
+                      (η (hom a e)))
+                )
+                _.
+
+
   Definition LRB_associator_comp_l'
              {a b c d e : B}
              (f0 : hom a b)
@@ -1603,6 +1695,148 @@ Section LocalUnivalenceRezk.
        = LRB_associator_comp_l f0 g0 h0 i0 · #(η (hom a e)) (pr1 (rassociator_transf _ _ _ _) ((f0 · g0 : hom _ _),(h0,i0))) · LRB_associator_comp_l' f0 g0 h0 i0.
   Proof.
     unfold LRB_associator_comp_l, LRB_associator_comp_l'.
+
+    set (n2 := LRB_composition_comm a b c).
+    set (n1 := LRB_associator_comm a c d e).
+
+    set (q := toforallpaths _ _ _ (base_paths _ _ n1) (f0 · g0 : hom _ _, (h0, i0))).
+
+    etrans.
+    2: {
+      apply maponpaths_2.
+      unfold n2.
+      rewrite assoc'.
+      apply maponpaths.
+      exact (! prewhisker_LRB_associator_co (f0 · g0) h0 i0).
+    }
+
+    rewrite assoc.
+    etrans.
+    2: {
+      apply maponpaths_2.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      apply pathsinv0, (pr2 (pr2 (LRB_composition_comm a c e) (f0 · g0 : hom _ _, h0 · i0 : hom _ _))).
+    }
+    rewrite id_right.
+    unfold n2.
+
+    etrans.
+    2: {
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      etrans.
+      2: apply (functor_comp (LRB_composition a c e)).
+      apply maponpaths.
+      cbn.
+      rewrite id_left.
+      apply maponpaths, pathsinv0,  (pr2 (LRB_composition_comm c d e) (h0, i0)).
+    }
+
+    Check pr21 (LRB_associator_nat_z_iso a c d e) _ _.
+
+    (* set (t := toforallpaths _ _ _ (base_paths _ _ (LRB_associator_comm a c d e)) (f0 · g0 : hom _ _ , (h0, i0))).
+    simpl in t. *)
+
+    etrans.
+    2: {
+      apply maponpaths, maponpaths_2.
+      exact (! prewhisker_LRB_associator' (f0 · g0) h0 i0).
+    }
+    unfold test.
+
+    etrans.
+    2: {
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      rewrite assoc'.
+      apply maponpaths.
+      etrans.
+      2: apply functor_comp.
+      cbn.
+      rewrite id_left.
+      now rewrite id_right.
+    }
+
+
+
+    (* set (f1 := is_z_isomorphism_mor (pr2 (LRB_composition_comm a b c) (f0, g0))).
+    set (f2 :=  (is_z_isomorphism_mor (pr2 (LRB_composition_comm c d e) (h0, i0)))). *)
+
+
+    set (s := ! prewhisker_LRB_associator_co f0 g0 h0).
+
+    etrans.
+    2: {
+      rewrite assoc.
+      apply maponpaths_2.
+      etrans.
+      2: apply functor_comp.
+      apply maponpaths.
+      cbn.
+      now rewrite id_right.
+    }
+
+
+    etrans.
+    2: {
+
+
+      etrans.
+      2: {
+        rewrite assoc.
+        apply maponpaths_2.
+        rewrite assoc.
+        apply maponpaths_2.
+        apply functor_comp.
+      }
+
+      etrans.
+      2: {
+        do 2 apply maponpaths_2.
+        apply maponpaths.
+        etrans.
+        2: { apply binprod_comp. }
+        now rewrite id_right.
+      }
+      apply idpath.
+    }
+
+
+
+
+    etrans.
+    2: {
+
+      apply maponpaths_2.
+      rewrite assoc.
+      apply maponpaths_2.
+      rewrite assoc'.
+      unfold n2.
+      Check (prewhisker_LRB_associator_co (f0 · g0) h0 i0).
+
+
+    set (α1 := LRB_associator_nat_z_iso a c d e).
+    set (α2 := LRB_composition_comm a b c).
+
+    unfold n2.
+    Check prewhisker_LRB_associator_co (f0 · g0) h0 i0.
+
+    Check prewhisker_LRB_associator f0 g0 (h0 · i0).
+
+    Check LRB_associator_
+
+
+    Check paste_nat_z_iso_square _ (pair_nat_z_iso_comp (pair_nat_z_iso (nat_z_iso_comp (nat_z_iso_id _) (nat_z_iso_id _)) (pair_nat_z_iso_comp (pair_nat_z_iso α2 (nat_z_iso_comp (nat_z_iso_id _) (nat_z_iso_id _)))))) α1.
+
+
+    Check paste_nat_z_iso_square _ (pair_nat_z_iso (nat_z_iso_comp _ _) (nat_z_iso_comp _ _)) α1.
+
   Admitted.
 
   Definition LRB_associator_comp_m
