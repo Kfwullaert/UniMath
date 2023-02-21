@@ -327,3 +327,12 @@ PseudoFunctors/DisplayedUniversalArrow.v
 
 RezkCompletions/BicatToLocalUnivalentBicat.v
 RezkCompletions/RezkCompletionOfBicategory.v
+
+DaggerCategories/Core.v
+DaggerCategories/Morphisms/Unitary.v
+DaggerCategories/Univalence.v
+DaggerCategories/BicatOfDaggerCats.v
+DaggerCategories/Lemmas.v
+DaggerCategories/FunctorDaggerCat.v
+DaggerCategories/Functors/FullyFaithful.v
+DaggerCategories/Functors/WeakEquivalences.v
