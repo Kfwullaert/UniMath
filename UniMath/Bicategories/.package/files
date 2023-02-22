@@ -336,3 +336,4 @@ DaggerCategories/Lemmas.v
 DaggerCategories/FunctorDaggerCat.v
 DaggerCategories/Functors/FullyFaithful.v
 DaggerCategories/Functors/WeakEquivalences.v
+DaggerCategories/Examples/groupoids.v
