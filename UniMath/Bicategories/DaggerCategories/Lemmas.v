@@ -9,6 +9,7 @@ Require Import UniMath.Bicategories.Core.Bicat.
 
 Require Import UniMath.Bicategories.DaggerCategories.Core.
 Require Import UniMath.Bicategories.DaggerCategories.BicatOfDaggerCats.
+Require Import UniMath.Bicategories.DaggerCategories.Morphisms.Unitary.
 
 Local Open Scope cat.
 
@@ -40,6 +41,17 @@ Section Lemmas.
     2: apply isapropunit.
     apply (nat_trans_eq D).
     exact p.
+  Qed.
+
+  Lemma unitary_eq
+        {C : category} {dag : dagger C}
+        {x y : C} (f g : unitary dag x y)
+    : pr1 f = pr1 g -> f = g.
+  Proof.
+    intro p.
+    use total2_paths_f.
+    - exact p.
+    - apply isaprop_is_unitary.
   Qed.
 
 End Lemmas.

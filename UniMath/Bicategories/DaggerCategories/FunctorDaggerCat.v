@@ -70,29 +70,16 @@ Section DaggerFunctorCategories.
 
   Notation "[ C , D ]†" := dagger_functor_cat.
 
+(*End DaggerFunctorCategories.
+
+Section Univalence.*)
+
+
+  (* This should be put in a section: UnitaryMorphisms. *)
   Definition unitary_functors (F G : ob (pr1 [C,D]† : category))
     : UU
     := ∑ α : nat_trans (pr11 F) (pr11 G),
         (∏ x : pr11 C, Isos.is_inverse_in_precat (α x) ((pr12 D) _ _ (α x))).
-
-  Definition id_to_pr1_id
-             (F G : ob (pr1 [C,D]† : category))
-    : F = G ≃ pr1 F = pr1 G.
-  Proof.
-    use subtypeInjectivity.
-    intro.
-    apply isaprop_is_dagger_functor.
-  Defined.
-
-  Definition id_pr1_to_pr11_id
-             (F G : ob (pr1 [C,D]† : category))
-    : pr1 F = pr1 G ≃ pr11 F = pr11 G.
-  Proof.
-    use subtypeInjectivity.
-    intro.
-    apply isaprop_is_functor.
-    apply (pr21 D).
-  Defined.
 
   Definition dagger_functor_cat_unitary
              (F G : ob (pr1 [C,D]† : category))
@@ -122,8 +109,100 @@ Section DaggerFunctorCategories.
       + apply isaprop_is_unitary.
   Defined.
 
-  Definition functors_eq_data
+  (* Section: Univalence *)
+
+  Local Definition id_to_pr1_id
              (F G : ob (pr1 [C,D]† : category))
+    : F = G ≃ pr1 F = pr1 G.
+  Proof.
+    use subtypeInjectivity.
+    intro.
+    apply isaprop_is_dagger_functor.
+  Defined.
+
+  Local Definition id_pr1_to_pr11_id
+             (F G : ob (pr1 [C,D]† : category))
+    : pr1 F = pr1 G ≃ pr11 F = pr11 G.
+  Proof.
+    use subtypeInjectivity.
+    intro.
+    apply isaprop_is_functor.
+    apply (pr21 D).
+  Defined.
+
+  Definition unitary_to_functor_eq_ob
+             (F G : ob (pr1 [C,D]† : category))
+             (u : is_dagger_univalent D)
+    : unitary_functors F G -> pr111 F = pr111 G.
+  Proof.
+    intro A.
+    apply funextsec.
+    intro c.
+    apply u.
+    exact (pr1 A c ,, pr2 A c).
+  Defined.
+
+  Lemma transport_of_dagger_functor_map_is_pointwise
+        (F0 G0 : pr11 C -> pr11 D)
+        (F1 : ∏ a b : pr11 C, a --> b -> F0 a --> F0 b)
+        (gamma : F0  = G0 )
+        (a b : pr11 C) (f : a --> b) :
+    transportf (fun x : pr11 C -> pr11 D =>
+                  ∏ a0 b0 : pr11 C, a0 --> b0 -> x a0 --> x b0)
+               gamma F1 a b f =
+      Univalence.double_transport (toforallpaths (λ _ : pr11 C, pr11 D) F0 G0 gamma a)
+                       (toforallpaths (λ _ : pr11 C, pr11 D) F0 G0 gamma b)
+                       (F1 a b f).
+  Proof.
+    induction gamma.
+    apply idpath.
+  Qed.
+
+  Lemma double_transport_idtodaggeriso (a a' b b' : pr111 D)
+        (p : a = a') (q : b = b')  (f : a --> b) :
+    Univalence.double_transport p q f = pr1 (idtodaggeriso (pr2 D) _ _ (! p)) · f · pr1 (idtodaggeriso (pr2 D) _ _ q).
+  Proof.
+    destruct p.
+    destruct q.
+    intermediate_path (identity _ · f).
+    - apply pathsinv0; apply id_left.
+    - apply pathsinv0; apply id_right.
+  Defined.
+
+  Definition unitary_to_functor_eq
+             (F G : ob (pr1 [C,D]† : category))
+             (u : is_dagger_univalent D)
+    : unitary_functors F G -> pr11 F = pr11 G.
+  Proof.
+    intro A.
+    apply (total2_paths_f (unitary_to_functor_eq_ob F G u A)).
+    unfold unitary_to_functor_eq_ob.
+    apply funextsec ; intro c1.
+    apply funextsec ; intro c2.
+    apply funextsec ; intro f.
+    rewrite transport_of_dagger_functor_map_is_pointwise.
+    rewrite toforallpaths_funextsec.
+    etrans.
+    { apply double_transport_idtodaggeriso. }
+
+    (* This is copied from univalence functor cat *)
+    (* etrans.
+    { rewrite <- assoc.
+      apply cancel_precomposition.
+      apply (nat_trans_ax (pr1 A)).
+    }
+    etrans.
+    { apply cancel_postcomposition.
+      apply nat_trans_inv_pointwise_inv_after_p_z_iso. }
+    rewrite assoc.
+    apply remove_id_left; try apply idpath.
+    set (TA' := z_iso_after_z_iso_inv A).
+    set (TA'' := nat_trans_comp_pointwise _ _ _ _ _ _ _ _  _ TA').
+    apply TA''. *)
+  Admitted.
+
+  Definition functors_eq_data
+  (F G : ob (pr1 [C,D]† : category))
     : UU
     := ∑ p : (∏ x : pr11 C, (pr11 F x) = (pr11 G x)),
         ∏ (x y : pr11 C) (f : (pr11 C)⟦x,y⟧),
@@ -232,10 +311,9 @@ Section DaggerFunctorCategories.
     - exact (dagger_functor_cat_unitary F G ∘ pr11_id_to_unitary_functors u F G ∘ id_pr1_to_pr11_id F G ∘ id_to_pr1_id F G)%weq.
     - intro p.
       induction p.
-
       use total2_paths_f.
       2: apply isaprop_is_unitary.
       apply idpath.
   Qed.
 
-End DaggerFunctorCategories.
+End Univalence.

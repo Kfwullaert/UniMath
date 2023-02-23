@@ -13,6 +13,7 @@ Require Import UniMath.CategoryTheory.Groupoids.
 Require Import UniMath.Bicategories.DaggerCategories.Core.
 Require Import UniMath.Bicategories.DaggerCategories.Univalence.
 Require Import UniMath.Bicategories.DaggerCategories.Morphisms.Unitary.
+Require Import UniMath.Bicategories.DaggerCategories.Lemmas.
 
 Local Open Scope cat.
 
@@ -23,17 +24,6 @@ Proof.
   intros pg ph.
   apply (inv_z_iso_unique' _ _ _ (f ,, h ,, ph)).
   apply pg.
-Qed.
-
-Lemma unitary_eq
-        {C : category} {dag : dagger C}
-        {x y : C} (f g : unitary dag x y)
-  : pr1 f = pr1 g -> f = g.
-Proof.
-  intro p.
-  use total2_paths_f.
-  - exact p.
-  - apply isaprop_is_unitary.
 Qed.
 
 Section GroupoidsAsDaggers.

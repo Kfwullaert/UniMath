@@ -32,4 +32,19 @@ Section DaggerUnivalence.
     do 2 (apply impred_isaprop ; intro) ; apply isapropisweq.
   Qed.
 
+  Definition daggerisotoid
+             {C : category} {dag : dagger C}
+             (u : is_univalent_dagger dag) {x y : C}
+    : unitary dag x y -> x = y
+    := invmap (make_weq _ (u x y)).
+
+  Lemma daggerisotoid_idtodaggeriso
+        {C : category} {dag : dagger C}
+        (u : is_univalent_dagger dag) {x y : C}
+        (p : x = y)
+    : daggerisotoid u (idtodaggeriso dag _ _ p) = p.
+  Proof.
+    apply (homotinvweqweq (make_weq _ (u x y))).
+  Qed.
+
 End DaggerUnivalence.

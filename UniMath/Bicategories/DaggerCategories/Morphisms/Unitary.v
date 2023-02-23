@@ -30,6 +30,17 @@ Section UnitaryMorphisms.
     : UU
     := ∑ f : C⟦x,y⟧, is_unitary dag f.
 
+  Lemma unitary_eq
+        {C : category} {dag : dagger_structure C}
+        {x y : C}
+        (f g : unitary dag x y)
+    : pr1 f = pr1 g -> f = g.
+  Proof.
+    intro p.
+    apply (total2_paths_f p).
+    apply isaprop_is_unitary.
+  Qed.
+
   Lemma isaset_unitary
         {C : category} (dag : dagger_structure C) (x y : C)
     : isaset (unitary dag x y).
@@ -49,5 +60,71 @@ Section UnitaryMorphisms.
               [ refine (id_left _ @ _) ; apply dagger_to_law_id
               | refine (id_right _ @ _) ; apply dagger_to_law_id ]).
   Defined.
+
+  Definition unitary_comp
+             {C : category} {dag : dagger C}
+             {x y z : C}
+             {f : C⟦x,y⟧} (ff : is_unitary dag f)
+             {g : C⟦y,z⟧} (gg : is_unitary dag g)
+    : is_unitary dag (f · g).
+  Proof.
+    split.
+    - etrans.
+      1: apply maponpaths, dagger_to_law_comp.
+      etrans.
+      1: apply assoc.
+      etrans.
+      1: apply maponpaths_2, assoc'.
+      etrans.
+      1: apply maponpaths_2, maponpaths, gg.
+      etrans.
+      1: apply maponpaths_2, id_right.
+      apply ff.
+    - etrans.
+      1: apply maponpaths_2, dagger_to_law_comp.
+      etrans.
+      1: apply assoc.
+      etrans.
+      1: apply maponpaths_2, assoc'.
+      etrans.
+      1: apply maponpaths_2, maponpaths, ff.
+      etrans.
+      1: apply maponpaths_2, id_right.
+      apply gg.
+  Qed.
+
+  Definition unitary_inv_is_unitary
+             {C : category} {dag : dagger C}
+             {x y : C} {f : C⟦x,y⟧}
+             (ff : is_unitary dag f)
+    : is_unitary dag (pr1 dag x y f).
+  Proof.
+    split.
+    - refine (! dagger_to_law_comp dag y x y (pr1 dag x y f) f @ _).
+      etrans.
+      1: apply maponpaths, ff.
+      apply dagger_to_law_id.
+    - refine (! dagger_to_law_comp dag x y x f (pr1 dag x y f) @ _).
+      etrans.
+      1: apply maponpaths, ff.
+      apply dagger_to_law_id.
+  Qed.
+
+  Definition unitary_inv
+             {C : category} {dag : dagger C}
+             {x y : C}
+             (f : unitary dag x y)
+    : unitary dag y x
+    := _ ,, unitary_inv_is_unitary (pr2 f).
+
+  Lemma unitary_inv_of_unitary_inv
+        {C : category} {dag : dagger C}
+        {x y : C}
+        (f : unitary dag x y)
+    : unitary_inv (unitary_inv f) = f.
+  Proof.
+    use unitary_eq.
+    apply dagger_to_law_idemp.
+  Qed.
 
 End UnitaryMorphisms.

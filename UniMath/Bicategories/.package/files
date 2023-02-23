@@ -337,3 +337,4 @@ DaggerCategories/FunctorDaggerCat.v
 DaggerCategories/Functors/FullyFaithful.v
 DaggerCategories/Functors/WeakEquivalences.v
 DaggerCategories/Examples/groupoids.v
+DaggerCategories/Examples/relations.v

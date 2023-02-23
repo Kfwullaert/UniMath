@@ -760,6 +760,8 @@ The packages and files are listed here in logical order: each file depends only 
    - [DaggerCategories/FunctorDaggerCat.v](Bicategories/DaggerCategories/FunctorDaggerCat.v)
    - [DaggerCategories/Functors/FullyFaithful.v](Bicategories/DaggerCategories/Functors/FullyFaithful.v)
    - [DaggerCategories/Functors/WeakEquivalences.v](Bicategories/DaggerCategories/Functors/WeakEquivalences.v)
+   - [DaggerCategories/Examples/groupoids.v](Bicategories/DaggerCategories/Examples/groupoids.v)
+   - [DaggerCategories/Examples/relations.v](Bicategories/DaggerCategories/Examples/relations.v)
    - [All.v](Bicategories/All.v)
 ## Package [Ktheory](Ktheory/README.md)
    - [GrothendieckGroup.v](Ktheory/GrothendieckGroup.v)
