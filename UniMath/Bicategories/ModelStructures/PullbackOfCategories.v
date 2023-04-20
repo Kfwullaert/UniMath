@@ -65,10 +65,10 @@ Section A.
     : disp_cat (category_binproduct A1 A2).
   Proof.
     exists pullback_of_CATs_disp_data.
-    repeat split ; intro ; intros
-    ; try (apply homset_property).
-    apply isasetaprop.
-    apply homset_property.
+    abstract (repeat split ; intro ; intros
+    ; try (apply homset_property) ;
+              apply isasetaprop ;
+              apply homset_property).
   Defined.
 
   Definition CAT_pb_cone
@@ -83,27 +83,115 @@ Section A.
     - use make_nat_trans.
       + intros [[a1 a2] γ].
         exact (pr1 γ).
-      + intros [[a1 a2] γ] [[a1' a2'] γ'] [[f1 f2] p].
-        exact p.
+      + abstract (intros ? ? [? p] ;
+        exact p).
     - intros [[a1 a2] γ].
       exact (pr2 γ).
   Defined.
 
-  Lemma CAT_has_bp_ump : has_pb_ump CAT_pb_cone.
+  Definition CAT_bp_ump_1_functor_existence
+    {C : category}
+    {G1 : functor C A1}
+    {G2 : functor C A2}
+    (γ : nat_z_iso (functor_composite G1 F1) (functor_composite G2 F2))
+    : functor C (total_category_data pullback_of_CATs_disp_data).
   Proof.
-    unfold has_pb_ump.
-    split.
-    - unfold pb_ump_1.
-      intro pbcone.
-      unfold pb_1cell.
-      use tpair.
-      + use make_functor.
-        * use make_functor_data.
-          -- intro v.
-             exists ((pr1 (pb_cone_pr1 pbcone) v) ,, (pr1 (pb_cone_pr2 pbcone) v)).
-             cbn in *.
-             Search pb_cone.
-  Admitted.
+    use make_functor.
+    - use make_functor_data.
+      + intro c.
+        exists (G1 c ,, G2 c).
+        exact ( _ ,, pr2 γ c).
+      + intros c1 c2 f.
+        exists (#G1 f ,, #G2 f).
+        exact (pr21 γ _ _ f).
+    - split ; intro ; intros ; use total2_paths_f.
+      + abstract (cbn ; now do 2 rewrite functor_id).
+      + abstract (apply homset_property).
+      + abstract (cbn ; now do 2 rewrite functor_comp).
+      + abstract (apply homset_property).
+  Defined.
+
+  Definition CAT_bp_ump_1_nat_z_iso_existence1
+    {C : category}
+    {G1 : functor C A1}
+    {G2 : functor C A2}
+    (γ : nat_z_iso (functor_composite G1 F1) (functor_composite G2 F2))
+    : nat_z_iso
+        (functor_composite (CAT_bp_ump_1_functor_existence γ)
+           (functor_composite (pr1_category pullback_of_CATs_disp_cat) (pr1_functor A1 A2))) G1.
+  Proof.
+    use make_nat_z_iso.
+    - apply nat_trans_id.
+    - exact (is_nat_z_iso_nat_trans_id G1).
+  Defined.
+
+  Definition CAT_bp_ump_1_nat_z_iso_existence2
+    {C : category}
+    {G1 : functor C A1}
+    {G2 : functor C A2}
+    (γ : nat_z_iso (functor_composite G1 F1) (functor_composite G2 F2))
+    : nat_z_iso
+        (functor_composite (CAT_bp_ump_1_functor_existence γ)
+           (functor_composite (pr1_category pullback_of_CATs_disp_cat) (pr2_functor A1 A2))) G2.
+  Proof.
+    use make_nat_z_iso.
+    - apply nat_trans_id.
+    - exact (is_nat_z_iso_nat_trans_id G2).
+  Defined.
+
+  Lemma CAT_bp_ump_1 : pb_ump_1 CAT_pb_cone.
+  Proof.
+    intros [C [G1 [G2 γ]]].
+    exists (CAT_bp_ump_1_functor_existence (invertible_2cell_to_nat_z_iso _ _ γ)).
+    exists (nat_z_iso_to_invertible_2cell _ _ (CAT_bp_ump_1_nat_z_iso_existence1 (invertible_2cell_to_nat_z_iso _ _ γ))).
+    exists (nat_z_iso_to_invertible_2cell _ _ (CAT_bp_ump_1_nat_z_iso_existence2 (invertible_2cell_to_nat_z_iso _ _ γ))).
+    use nat_trans_eq.
+    { apply homset_property. }
+    abstract (intro ; cbn ; rewrite (functor_id F1 _ ), (functor_id F2 _) ;
+              do 2 rewrite id_left ;
+              now do 2 rewrite id_right).
+  Defined.
+
+  Lemma CAT_bp_ump_2 : pb_ump_2 CAT_pb_cone.
+  Proof.
+    unfold pb_ump_2.
+    intros C G1 G2 γ1 γ2 p.
+    use tpair.
+    - use tpair.
+      + use make_nat_trans.
+        * intro c.
+          exists (pr1 γ1 c ,, pr1 γ2 c).
+          abstract (
+              refine (_ @ ! toforallpaths _ _ _ (base_paths _ _ p) c @ _)
+              ; cbn ;
+                  [ now rewrite id_left, id_right
+                  | do 2 rewrite id_right] ; apply idpath).
+        * intro ; intros.
+          repeat (use total2_paths_f).
+          -- abstract (apply (pr2 γ1)).
+          -- abstract (cbn ; rewrite transportf_const ;
+             apply (pr2 γ2)).
+          -- apply homset_property.
+      + abstract (split ; use (nat_trans_eq (homset_property _))
+        ; intro ; apply idpath).
+    - intro t.
+      use total2_paths_f.
+      + use (nat_trans_eq (homset_property _)).
+        abstract (
+            intro c
+            ; use total2_paths_f ;
+            [ use total2_paths_f ;
+              [ exact (toforallpaths _ _ _ (base_paths _ _ (pr12 t)) c)
+              | cbn ; rewrite transportf_const
+                ; exact (toforallpaths _ _ _ (base_paths _ _ (pr22 t)) c)]
+              | apply homset_property]).
+      + abstract (use total2_paths_f
+        ; apply isaset_nat_trans
+        ; apply homset_property).
+  Defined.
+
+  Definition CAT_has_bp_ump : has_pb_ump CAT_pb_cone
+    := CAT_bp_ump_1 ,, CAT_bp_ump_2.
 
 End A.
 
