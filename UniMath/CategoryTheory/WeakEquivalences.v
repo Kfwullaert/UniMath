@@ -283,8 +283,8 @@ Section WeakEquivalencePreservationsBinProducts.
     (BP₁ : BinProducts C) (BP₂ : BinProducts D)
     : preserves_chosen_binproducts_eq F BP₁ BP₂.
   Proof.
-    apply hinhpr.
     intros x y.
+    apply hinhpr.
     apply Duniv.
     set (Fp := weak_equiv_preserves_binproducts Fw).
     set (p := make_BinProduct _ _ _ _ _ _ (Fp x y (BP₁ x y) _ _ (pr2 (BP₁ x y)))).

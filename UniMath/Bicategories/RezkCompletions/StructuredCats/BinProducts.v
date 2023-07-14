@@ -312,28 +312,71 @@ Section BicatOfCategoriesWithChosenBinproductsHasRezkCompletion.
       intros [t Fprod].
       exists tt.
 
-      use (factor_through_squash _ _ Fprod).
+      intros y1 y2.
+      simpl.
+      simpl in Fprod.
+
+      set (h1 := eso_from_weak_equiv _ Gw y1).
+      set (h2 := eso_from_weak_equiv _ Gw y2).
+
+      use (factor_through_squash _ _ h1).
+      { apply isapropishinh. }
+      intros [x1 i1].
+
+      use (factor_through_squash _ _ h2).
+      { apply isapropishinh. }
+      intros [x2 i2].
+
+      unfold preserves_chosen_binproducts_eq in Fprod.
+
+      use (factor_through_squash _ _ (Fprod x1 x2)).
       { apply isapropishinh. }
       intro p.
-      clear Fprod.
+
+      pose (ϕ₁ := nat_z_iso_pointwise_z_iso α x1).
+      pose (ϕ₂ := nat_z_iso_pointwise_z_iso α x2).
+      pose (ϕ₃ := nat_z_iso_pointwise_z_iso α (pr1 C1_prod x1 x2)).
+
+      pose (ψ₁ := isotoid _ (pr2 C3) ϕ₁).
+      pose (ψ₂ := isotoid _ (pr2 C3) ϕ₂).
+      pose (ψ₃ := isotoid _ (pr2 C3) ϕ₃).
+
+      pose (j1 := isotoid _ (pr2 C2) i1).
+      pose (j2 := isotoid _ (pr2 C2) i2).
+
+      (*
+        H (y1 × y2) = H (G x1 × G x2)
+          = H (G (x1 × x2))
+          = F (x1 × x2)
+          = F x1 × F x2
+          = H(G(x1)) × H(G(x2))
+          = H y1 × H y2.
+
+       *)
+
 
       set (Gprod := weak_equiv_preserves_binproducts_eq Gw (pr2 C2) (pr1 C1_prod) (pr1 C2_prod)).
-      use (factor_through_squash _ _ Gprod).
+      use (factor_through_squash _ _ (Gprod x1 x2)).
       { apply isapropishinh. }
-      intro q.
+      intro Gx1x2.
       clear Gprod.
 
-      unfold preserves_chosen_binproducts_eq.
       apply hinhpr.
 
-      intros x2 y2.
+      rewrite <- j1, <- j2.
+      etrans. {
+        apply maponpaths.
+        exact (! Gx1x2).
+      }
 
-      set (x1 := eso_from_weak_equiv _ Gw x2).
-      set (y1 := eso_from_weak_equiv _ Gw y2).
-      simpl.
+      refine (ψ₃ @ _).
+      refine (p @ _).
 
-  Admitted.
+      refine (maponpaths (fun z => BinProductObject _ (pr1 C3_prod z _)) _ @ _).
+      { exact (! ψ₁). }
+      refine (maponpaths (fun z => BinProductObject _ (pr1 C3_prod _ z)) _).
+      exact (! ψ₂).
 
-  (* Defined. *)
+  Defined.
 
 End BicatOfCategoriesWithChosenBinproductsHasRezkCompletion.

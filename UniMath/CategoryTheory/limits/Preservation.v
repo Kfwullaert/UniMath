@@ -223,15 +223,15 @@ Definition preserves_chosen_binproducts_eq
            (BP₁ : BinProducts C₁)
            (BP₂ : BinProducts C₂)
   : UU
-  := ∥ ∏ x y : C₁, F (BP₁ x y) = BP₂ (F x) (F y) ∥.
+  := ∏ x y : C₁,  ∥ F (BP₁ x y) = BP₂ (F x) (F y) ∥.
 
 Proposition identity_preserves_chosen_binproducts_eq
             {C : category}
             (BP : BinProducts C)
   : preserves_chosen_binproducts_eq (functor_identity C) BP BP.
 Proof.
+  intro ; intros.
   apply hinhpr.
-  intros.
   apply idpath.
 Qed.
 
@@ -246,23 +246,20 @@ Proposition composition_preserves_chosen_binproducts_eq
             (HG : preserves_chosen_binproducts_eq G BP₂ BP₃)
   : preserves_chosen_binproducts_eq (F ∙ G) BP₁ BP₃.
 Proof.
-  revert HF.
-  use factor_through_squash.
-  {
-    apply propproperty.
-  }
-  intro p.
-  revert HG.
-  use factor_through_squash.
-  {
-    apply propproperty.
-  }
-  intro q.
-  cbn.
+  intros x y.
+
+  use (factor_through_squash _ _ (HF x y)).
+  { apply propproperty. }
+  intros HFxy.
+
+  use (factor_through_squash _ _ (HG (F x) (F y))).
+  { apply propproperty. }
+  intros HGxy.
+
   apply hinhpr.
-  intros.
-  rewrite p, q.
-  apply idpath.
+  cbn in *.
+  rewrite HFxy.
+  now rewrite HGxy.
 Qed.
 
 (**
