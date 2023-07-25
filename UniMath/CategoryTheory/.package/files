@@ -310,6 +310,9 @@ Monoidal/Examples/BinopCartesianMonoidal.v
 Monoidal/Examples/SetWithSubset.v
 Monoidal/Examples/SmashProductMonoidal.v
 
+Monoidal/Comonoids/CategoriesOfComonoids.v
+Monoidal/Comonoids/Commutative.v
+
 Monoidal/AlternativeDefinitions/MonoidalCategoriesReordered.v
 Monoidal/AlternativeDefinitions/MonoidalCategoriesTensored.v
 Monoidal/AlternativeDefinitions/EquivalenceWhiskeredNonCurriedMonoidalCategories.v
