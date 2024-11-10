@@ -1,7 +1,6 @@
 (**
    In this file, we show that an arbitrary weak equivalence F : C -> D preserves subobject classifiers.
 
-
  *)
 
 Require Import UniMath.Foundations.All.
@@ -22,8 +21,6 @@ Require Import UniMath.CategoryTheory.SubobjectClassifier.SubobjectClassifier.
 Require Import UniMath.CategoryTheory.SubobjectClassifier.PreservesSubobjectClassifier.
 
 Local Open Scope cat.
-
-Search is_subobject_classifier z_iso.
 
 Lemma contr_to_contr_paths {A : UU}
   : iscontr A → (∏ a b : A, iscontr (a = b)).
@@ -377,4 +374,17 @@ Proof.
   intros [c₂ i₂].
 
   exact (weak_equiv_preserves_subobject_classifier_uvp Fw t_D  S i₁ i₂ f).
+Qed.
+
+Lemma weak_equiv_creates_subobject_classifier
+  {C1 C2 : category}
+  {F : C1 ⟶ C2}
+  (Fw : is_weak_equiv F)
+  (T1 : Terminal C1)
+  (P1 : subobject_classifier T1)
+  : subobject_classifier (make_Terminal _ (weak_equiv_preserves_terminal _ Fw _ (pr2 T1))).
+Proof.
+  set (T2 := make_Terminal _ (weak_equiv_preserves_terminal _ Fw _ (pr2 T1))).
+  set (P_2 := weak_equiv_preserves_subobject_classifier Fw T1 T2 P1 (pr12 P1) (pr22 P1)).
+  exact (make_subobject_classifier _ _ P_2).
 Qed.
