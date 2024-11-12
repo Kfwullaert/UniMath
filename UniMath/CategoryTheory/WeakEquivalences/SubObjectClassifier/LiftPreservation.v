@@ -123,9 +123,7 @@ Section LiftAlongWeakEquivalencePreservesSubobjectClassifier.
       assert (tmp₀ : TerminalArrow (preserves_terminal_to_terminal F Fpt T1) T3 · nat_z_iso_inv α (pr1 T1) = TerminalArrow T3' T3).
       {
         use proofirrelevancecontr.
-        simpl.
-
-        admit.
+        apply Hpt, T2.
       }
       rewrite <- tmp₀.
       rewrite ! assoc'.
@@ -140,7 +138,7 @@ Section LiftAlongWeakEquivalencePreservesSubobjectClassifier.
       use proofirrelevancecontr.
       apply (weak_equiv_preserves_terminal G Gw).
       apply T1.
-    Admitted.
+    Qed.
 
     Lemma weak_equiv_lifts_preserves_subobject_classifier'
       : is_subobject_classifier T3 (H Ω₂) tr₃.

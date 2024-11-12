@@ -14,7 +14,6 @@ Require Import UniMath.CategoryTheory.WeakEquivalences.Core.
 Require Import UniMath.CategoryTheory.Limits.Pullbacks.
 Require Import UniMath.CategoryTheory.Limits.Preservation.
 Require Import UniMath.CategoryTheory.WeakEquivalences.Preservation.Pullbacks.
-
 Require Import UniMath.CategoryTheory.WeakEquivalences.Reflection.Pullbacks.
 
 Local Open Scope cat.
