@@ -75,7 +75,7 @@ DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/ProductsBin.v
 DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/Pullbacks.v
 DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/Equalizers.v
 DisplayedBicats/Examples/ElementaryTopoi/FinitelyComplete.v
-DisplayedBicats/Examples/ElementaryTopoi/SubobjectClassifier.v
+DisplayedBicats/Examples/ElementaryTopoi/SubObjectClassifier.v
 DisplayedBicats/Examples/ElementaryTopoi/Exponentials.v
 DisplayedBicats/Examples/ElementaryTopoi/ElementaryTopos.v
 
