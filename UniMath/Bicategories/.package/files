@@ -491,12 +491,10 @@ DisplayedBicats/UniversalArrows/hBuilders/contractible_builder.v
 DisplayedBicats/UniversalArrows/Sigma/sigma_builder.v
 DisplayedBicats/UniversalArrows/Sigma/prod_builder.v
 DisplayedBicats/UniversalArrows/Sigma/fullsub_builder.v
-(**)
 DisplayedBicats/UniversalArrows/OverCat/FromWeakEquivalence.v
 DisplayedBicats/UniversalArrows/OverCat/SigmaConstruction.v
 DisplayedBicats/UniversalArrows/OverCat/ToProduct.v
-(**)
-DisplayedBicats/UniversalArrows/OverCat/DisplayedUniversalArrowOnCat.v
+
 RezkCompletions/BicatToLocalUnivalentBicat.v
 RezkCompletions/RezkCompletionOfBicategory.v
 RezkCompletions/Uniqueness.v
