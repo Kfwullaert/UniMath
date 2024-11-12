@@ -13,8 +13,8 @@ Require Import UniMath.CategoryTheory.SubobjectClassifier.PreservesSubobjectClas
 Require Import UniMath.CategoryTheory.WeakEquivalences.Terminal.
 Require Import UniMath.CategoryTheory.WeakEquivalences.Reflection.Pullbacks.
 Require Import UniMath.CategoryTheory.WeakEquivalences.Preservation.Pullbacks.
-Require Import UniMath.CategoryTheory.WeakEquivalences.Preservation.SubobjectClassifier.
-Require Import UniMath.CategoryTheory.WeakEquivalences.Reflection.SubobjectClassifiers.
+Require Import UniMath.CategoryTheory.WeakEquivalences.SubObjectClassifier.Preservation.
+Require Import UniMath.CategoryTheory.WeakEquivalences.SubObjectClassifier.Reflection.
 
 Local Open Scope cat.
 
