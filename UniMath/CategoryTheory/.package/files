@@ -221,6 +221,10 @@ WeakEquivalences/Preservation/Pullbacks.v
 WeakEquivalences/Reflection/Pullbacks.v
 WeakEquivalences/Creation/Pullbacks.v
 WeakEquivalences/LiftPreservation/Pullbacks.v
+WeakEquivalences/SubObjectClassifier/Reflection.v
+WeakEquivalences/SubObjectClassifier/Preservation.v
+WeakEquivalences/SubObjectClassifier/Creation.v
+WeakEquivalences/SubObjectClassifier/LiftPreservation.v
 RezkCompletions/RezkCompletions.v
 RezkCompletions/Construction.v
 

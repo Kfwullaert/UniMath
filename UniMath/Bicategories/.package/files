@@ -70,7 +70,14 @@ DisplayedBicats/Examples/BicatOfInvertibles.v
 DisplayedBicats/Examples/EndoMap.v
 
 Core/Examples/StructuredCategories.v
-DisplayedBicats/Examples/CategoriesWithStructure.v
+DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/Terminal.v
+DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/ProductsBin.v
+DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/Pullbacks.v
+DisplayedBicats/Examples/ElementaryTopoi/FiniteLimits/Equalizers.v
+DisplayedBicats/Examples/ElementaryTopoi/FinitelyComplete.v
+DisplayedBicats/Examples/ElementaryTopoi/SubobjectClassifier.v
+DisplayedBicats/Examples/ElementaryTopoi/Exponentials.v
+DisplayedBicats/Examples/ElementaryTopoi/ElementaryTopos.v
 
 MonoidalCategories/MonoidalFromBicategory.v
 MonoidalCategories/EndofunctorsMonoidal.v
@@ -477,9 +484,19 @@ OtherStructure/Examples/StructureBicatOfUnivCats.v
 OtherStructure/Examples/StructureOneTypes.v
 OtherStructure/Examples/StructureBicatOfEnrichedCats.v
 
-DisplayedBicats/DisplayedUniversalArrow.v
-DisplayedBicats/DisplayedUniversalArrowOnCat.v
-
+DisplayedBicats/UniversalArrows/core.v
+DisplayedBicats/UniversalArrows/hBuilders/propositional_builder.v
+DisplayedBicats/UniversalArrows/hBuilders/groupoidal_and_propositional_builder.v
+DisplayedBicats/UniversalArrows/hBuilders/contractible_builder.v
+DisplayedBicats/UniversalArrows/Sigma/sigma_builder.v
+DisplayedBicats/UniversalArrows/Sigma/prod_builder.v
+DisplayedBicats/UniversalArrows/Sigma/fullsub_builder.v
+(**)
+DisplayedBicats/UniversalArrows/OverCat/FromWeakEquivalence.v
+DisplayedBicats/UniversalArrows/OverCat/SigmaConstruction.v
+DisplayedBicats/UniversalArrows/OverCat/ToProduct.v
+(**)
+DisplayedBicats/UniversalArrows/OverCat/DisplayedUniversalArrowOnCat.v
 RezkCompletions/BicatToLocalUnivalentBicat.v
 RezkCompletions/RezkCompletionOfBicategory.v
 RezkCompletions/Uniqueness.v
