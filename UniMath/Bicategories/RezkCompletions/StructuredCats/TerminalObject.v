@@ -31,10 +31,15 @@ Import PseudoFunctor.Notations.
 Require Import UniMath.Bicategories.PseudoFunctors.Examples.BicatOfCatToUnivCat.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv.
 
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.CategoriesWithStructure.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Terminal.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.binproducts.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FinitelyComplete.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.SubObjectClassifier.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.Exponentials.
 
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrow.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrowOnCat.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.OverCat.FromWeakEquivalence.
 
 Local Open Scope cat.
 

@@ -36,14 +36,13 @@ Import PseudoFunctor.Notations.
 Require Import UniMath.Bicategories.PseudoFunctors.Examples.BicatOfCatToUnivCat.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv.
 
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.CategoriesWithStructure.
-
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrow.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrowOnCat.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.FromWeakEquivalence.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Equalizers.
 
 Local Open Scope cat.
 
-Section CategoriesWithPullbacksAdmitRezkCompletions.
+Section CategoriesWithEqualizersAdmitRezkCompletions.
 
   Context (LUR : left_universal_arrow univ_cats_to_cats).
   Context (η_weak_equiv : ∏ C : category, is_weak_equiv (pr12 LUR C)).
@@ -81,4 +80,4 @@ Section CategoriesWithPullbacksAdmitRezkCompletions.
       exact (weak_equiv_lifts_preserves_chosen_equalizers_eq C2 C3 α (pr1 E₁) (pr1 E₂) (pr1 E₃) Gw Feq).
   Defined.
 
-End CategoriesWithPullbacksAdmitRezkCompletions.
+End CategoriesWithEqualizersAdmitRezkCompletions.

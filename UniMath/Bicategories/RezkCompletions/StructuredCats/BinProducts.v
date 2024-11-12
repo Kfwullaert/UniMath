@@ -21,10 +21,6 @@ Require Import UniMath.CategoryTheory.Equivalences.Core.
 Require Import UniMath.CategoryTheory.Equivalences.CompositesAndInverses.
 Require Import UniMath.CategoryTheory.FunctorCategory.
 
-Require Import UniMath.CategoryTheory.Adjunctions.Core.
-Require Import UniMath.CategoryTheory.Equivalences.Core.
-Require Import UniMath.CategoryTheory.Equivalences.FullyFaithful.
-
 Require Import UniMath.CategoryTheory.DisplayedCats.Core.
 Require Import UniMath.CategoryTheory.DisplayedCats.Functors.
 Require Import UniMath.CategoryTheory.DisplayedCats.Total.
@@ -68,10 +64,9 @@ Import DispBicat.Notations.
 Require Import UniMath.Bicategories.PseudoFunctors.Examples.BicatOfCatToUnivCat.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv.
 
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.CategoriesWithStructure.
-
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrow.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrowOnCat.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.FromWeakEquivalence.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.binproducts.
 
 Local Open Scope cat.
 
