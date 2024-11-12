@@ -20,10 +20,10 @@ Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sub1Cell.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Prod.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sigma.
 
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.terminal.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.binproducts.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.pullbacks.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.lex.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Terminal.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.binproducts.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FinitelyComplete.
 
 Local Open Scope cat.
 

@@ -21,10 +21,13 @@ Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sub1Cell.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Prod.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sigma.
 
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.terminal.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.binproducts.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.pullbacks.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.lex.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Terminal.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.ProductsBin.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FinitelyComplete.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.SubObjectClassifier.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.Exponentials.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.ElementaryTopos.
 
 Local Open Scope cat.
 
