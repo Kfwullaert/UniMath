@@ -18,11 +18,8 @@ Require Import UniMath.CategoryTheory.Core.NaturalTransformations.
 Require Import UniMath.CategoryTheory.Adjunctions.Core.
 Require Import UniMath.CategoryTheory.Equivalences.Core.
 Require Import UniMath.CategoryTheory.Equivalences.CompositesAndInverses.
-Require Import UniMath.CategoryTheory.FunctorCategory.
-
-Require Import UniMath.CategoryTheory.Adjunctions.Core.
-Require Import UniMath.CategoryTheory.Equivalences.Core.
 Require Import UniMath.CategoryTheory.Equivalences.FullyFaithful.
+Require Import UniMath.CategoryTheory.FunctorCategory.
 
 Require Import UniMath.CategoryTheory.DisplayedCats.Core.
 Require Import UniMath.CategoryTheory.DisplayedCats.Functors.
@@ -152,33 +149,3 @@ Section LocallyContrWeakEquivalences.
   Defined.
 
 End LocallyContrWeakEquivalences.
-
-Section LocallyContrDirProd.
-
-  Context (LUR : left_universal_arrow univ_cats_to_cats).
-  Context {D₁ D₂ : disp_bicat bicat_of_cats}
-    (D_contr₁ : disp_2cells_iscontr D₁)
-    (D_contr₂ : disp_2cells_iscontr D₂).
-
-  Require Import UniMath.Bicategories.DisplayedBicats.Examples.Prod.
-  Let D_contr : disp_2cells_iscontr (disp_dirprod_bicat D₁ D₂).
-  Proof.
-  Admitted.
-
-  Context (LUR₁ : disp_left_universal_arrow LUR (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₁))).
-  Context (LUR₂ : disp_left_universal_arrow LUR (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₂))).
-
-  Definition make_disp_left_universal_arrow_if_contr_CAT_on_dirprod
-    : disp_left_universal_arrow
-        LUR
-        (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr)).
-  Proof.
-    use make_disp_left_universal_arrow_if_contr_CAT.
-    - exact (λ _ d, pr1 LUR₁ _ (pr1 d) ,, pr1 LUR₂ _ (pr2 d)).
-    - exact (λ _ d, pr12 LUR₁ _ (pr1 d) ,, pr12 LUR₂ _ (pr2 d)).
-    - intros C₁ d₁ C₂ d₂ f ff ; split ; simpl.
-      + apply LUR₁, ff.
-      + apply LUR₂, ff.
-  Defined.
-
-End LocallyContrDirProd.
