@@ -19,7 +19,7 @@ Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sub1Cell.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Prod.
 
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Terminal.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.binproducts.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.ProductsBin.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
 
 Local Open Scope cat.

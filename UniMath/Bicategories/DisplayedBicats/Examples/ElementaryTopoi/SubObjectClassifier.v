@@ -25,9 +25,6 @@ Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.Fin
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.ProductsBin.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FinitelyComplete.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.SubObjectClassifier.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.Exponentials.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.ElementaryTopos.
 
 Local Open Scope cat.
 
