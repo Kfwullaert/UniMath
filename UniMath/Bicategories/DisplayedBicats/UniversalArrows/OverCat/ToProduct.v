@@ -1,18 +1,12 @@
 Require Import UniMath.Foundations.All.
 Require Import UniMath.MoreFoundations.All.
-Require Import UniMath.CategoryTheory.Core.Categories.
-Require Import UniMath.CategoryTheory.Core.Isos.
-Require Import UniMath.CategoryTheory.Core.Univalence.
-Require Import UniMath.CategoryTheory.Core.Functors.
-Require Import UniMath.CategoryTheory.Core.NaturalTransformations.
-Require Import UniMath.CategoryTheory.Adjunctions.Core.
-Require Import UniMath.CategoryTheory.Equivalences.Core.
-Require Import UniMath.CategoryTheory.Equivalences.CompositesAndInverses.
-Require Import UniMath.CategoryTheory.FunctorCategory.
+Require Import UniMath.CategoryTheory.Core.Prelude.
 
 Require Import UniMath.CategoryTheory.Adjunctions.Core.
 Require Import UniMath.CategoryTheory.Equivalences.Core.
+Require Import UniMath.CategoryTheory.Equivalences.CompositesAndInverses.
 Require Import UniMath.CategoryTheory.Equivalences.FullyFaithful.
+Require Import UniMath.CategoryTheory.FunctorCategory.
 
 Require Import UniMath.CategoryTheory.DisplayedCats.Core.
 Require Import UniMath.CategoryTheory.DisplayedCats.Functors.
@@ -50,11 +44,12 @@ Require Import UniMath.Bicategories.DisplayedBicats.DispBiadjunction.
 Require Import UniMath.Bicategories.DisplayedBicats.DispInvertibles.
 Import DispBicat.Notations.
 
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.core.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.contractible_builder.
-
 Require Import UniMath.Bicategories.PseudoFunctors.Examples.BicatOfCatToUnivCat.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv.
+
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.hBuilders.contractible_builder.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.OverCat.FromWeakEquivalence.
 
 Local Open Scope cat.
 
@@ -67,17 +62,24 @@ Section LocallyContrDirProd.
     (D_contr₁ : disp_2cells_iscontr D₁)
     (D_contr₂ : disp_2cells_iscontr D₂).
 
-  Let D_contr : disp_2cells_iscontr (disp_dirprod_bicat D₁ D₂).
-  Proof.
-  Admitted.
+  Let D_prop : disp_2cells_isaprop (disp_dirprod_bicat D₁ D₂)
+      := disp_2cells_isaprop_from_disp_2cells_iscontr _ (disp_2cells_iscontr_prod _ _ D_contr₁ D_contr₂).
 
-  Context (LUR₁ : disp_left_universal_arrow LUR (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₁))).
-  Context (LUR₂ : disp_left_universal_arrow LUR (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₂))).
+  Let R'
+    : disp_psfunctor (disp_bicat_on_cat_to_univ_cat D₁) D₁ univ_cats_to_cats
+      := disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₁).
+  Let R''
+    : disp_psfunctor (disp_bicat_on_cat_to_univ_cat D₂) D₂ univ_cats_to_cats
+      := disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr₂).
+
+  Context
+    (LUR₁ : disp_left_universal_arrow LUR R')
+      (LUR₂ : disp_left_universal_arrow LUR R'').
 
   Definition make_disp_left_universal_arrow_if_contr_CAT_on_dirprod
     : disp_left_universal_arrow
         LUR
-        (disp_psfunctor_on_cat_to_univ_cat _ (disp_2cells_isaprop_from_disp_2cells_iscontr _ D_contr)).
+        (disp_psfunctor_on_cat_to_univ_cat _ D_prop).
   Proof.
     use make_disp_left_universal_arrow_if_contr_CAT.
     - exact (λ _ d, pr1 LUR₁ _ (pr1 d) ,, pr1 LUR₂ _ (pr2 d)).

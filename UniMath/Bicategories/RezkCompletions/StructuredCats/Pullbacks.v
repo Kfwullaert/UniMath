@@ -37,9 +37,9 @@ Require Import UniMath.Bicategories.PseudoFunctors.Examples.BicatOfCatToUnivCat.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv.
 
 Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
-Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.FromWeakEquivalence.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.OverCat.FromWeakEquivalence.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Terminal.
-Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.binproducts.
+Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.ProductsBin.
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.ElementaryTopoi.FiniteLimits.Pullbacks.
 
 Local Open Scope cat.

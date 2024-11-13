@@ -839,6 +839,17 @@ Section Disp_Dirprod.
     - apply HD2.
   Qed.
 
+  Definition disp_2cells_iscontr_prod
+             (HC1 : disp_2cells_iscontr D1)
+             (HC2 : disp_2cells_iscontr D2)
+    : disp_2cells_iscontr disp_dirprod_bicat.
+  Proof.
+    intro; intros.
+    (* apply -
+    - apply HC1.
+    - apply HC2. *)
+  Admitted.
+
 End Disp_Dirprod.
 
 (**

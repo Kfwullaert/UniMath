@@ -45,8 +45,8 @@ Import DispBicat.Notations.
 
 Require Import UniMath.Bicategories.DisplayedBicats.Examples.Sigma.
 
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.core.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.propositional_builder.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.hBuilders.propositional_builder.
 
 (* Require Import UniMath.Bicategories.DisplayedBicats.Examples.DispBicatOnCatToUniv. *)
 

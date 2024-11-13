@@ -45,8 +45,8 @@ Require Import UniMath.Bicategories.DisplayedBicats.DispBiadjunction.
 Require Import UniMath.Bicategories.DisplayedBicats.DispInvertibles.
 Import DispBicat.Notations.
 
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.core.
-Require Import UniMath.Bicategories.DisplayedBicats.DisplayedUniversalArrows.contractible_builder.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.core.
+Require Import UniMath.Bicategories.DisplayedBicats.UniversalArrows.hBuilders.contractible_builder.
 
 Local Open Scope cat.
 Local Open Scope mor_disp_scope.
