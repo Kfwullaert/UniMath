@@ -845,10 +845,10 @@ Section Disp_Dirprod.
     : disp_2cells_iscontr disp_dirprod_bicat.
   Proof.
     intro; intros.
-    (* apply -
+    apply (isofhleveldirprod 0).
     - apply HC1.
-    - apply HC2. *)
-  Admitted.
+    - apply HC2.
+  Qed.
 
 End Disp_Dirprod.
 
