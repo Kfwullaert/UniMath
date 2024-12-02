@@ -25,6 +25,7 @@ Proposition weak_equiv_reflects_terminal
 
 Section WeakEquivalencePreservationsTerminal.
 
+  (* ∏ t : Terminal C, is_terminal (F t) *)
   Proposition weak_equiv_preserves_chosen_terminal
     {C D : category} (F : C ⟶ D)
     : is_weak_equiv F
@@ -39,6 +40,7 @@ Section WeakEquivalencePreservationsTerminal.
     exact yi.
   Qed.
 
+  (*  ∏ x : C, isTerminal C x → isTerminal D (F x) *)
   Corollary weak_equiv_preserves_terminal
     {C D : category} (F : C ⟶ D)
     : is_weak_equiv F → preserves_terminal F.
@@ -50,6 +52,7 @@ Section WeakEquivalencePreservationsTerminal.
     - exact x_is_t.
   Qed.
 
+  (*  isTerminal t1 × isTerminal t2 → ∥ F t1 = t2 ∥ *)
   Corollary weak_equiv_preserves_chosen_terminal_eq
     {C D : category} (F : C ⟶ D)
     : is_weak_equiv F
@@ -57,6 +60,7 @@ Section WeakEquivalencePreservationsTerminal.
       → ∏ t1 t2, preserves_chosen_terminal_eq F t1 t2.
   Proof.
     intros Fw Duniv t1 t2.
+    unfold preserves_chosen_terminal_eq.
     apply hinhpr.
     apply Duniv.
     set (Ft1_t := weak_equiv_preserves_terminal _ Fw _ (pr2 t1)).
